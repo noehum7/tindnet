@@ -17,6 +17,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: AppColors.backgroundColor,
+        textTheme: TextTheme(
+            bodyLarge: TextStyle(color: AppColors.primaryColor), //Estilo de los textos
+          // labelLarge: TextStyle(color: Colors.white) Estilo de los botones
+        )
       ),
       routes: {
         '/welcome': (context) => WelcomeScreen(),

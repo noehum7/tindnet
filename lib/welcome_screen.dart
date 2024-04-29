@@ -5,6 +5,7 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.welcomeColor,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -27,22 +28,25 @@ class WelcomeScreen extends StatelessWidget {
                   Text(
                     'Bienvenido a TindNet',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
                   ),
                   SizedBox(height: 70), // Espacio entre el texto y el botón
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/login');
                     },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryColor, // Color de fondo del botón
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Comenzar',
-                          style: TextStyle(fontSize: 30, color: AppColors.primaryColor) // Tamaño de la fuente del texto
+                          'COMENZAR',
+                          style: TextStyle(fontSize: 25, color: Colors.white) // Tamaño de la fuente del texto
                         ),
                         SizedBox(width: 50), // Espacio entre el texto y el icono
-                        Icon(Icons.arrow_forward, size: 35, color: AppColors.primaryColor), // Icono de flecha hacia la derecha
+                        Icon(Icons.arrow_forward, size: 35, color: Colors.white), // Icono de flecha hacia la derecha
                       ],
                     ),
                   ),
