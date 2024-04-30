@@ -1,18 +1,29 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'firebase_options.dart';
 import 'welcome_screen.dart';
 import 'login.dart';
 import 'customer_registration.dart';
 import 'business_registration.dart';
 import 'app_colors.dart';
 
-void main() {
+// void main() {
+//   runApp(MyApp());
+// }
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'TindNet App',
       theme: ThemeData(
         primarySwatch: Colors.blue,

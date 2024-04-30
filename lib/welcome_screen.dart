@@ -16,7 +16,7 @@ class WelcomeScreen extends StatelessWidget {
                   0.5, // Altura del 50% de la pantalla
               child: Image.asset(
                 'assets/images/fondo.jpg',
-                width: double.infinity,
+                width: double.infinity, //Para coger todo el ancho posible
                 fit: BoxFit.cover,
               ),
             ),

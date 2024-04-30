@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "350507209371",
+    "project_id": "tindnet-1a1dd",
+    "storage_bucket": "tindnet-1a1dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350507209371:android:6384d168cc50c1cfa2ec3e",
+        "android_client_info": {
+          "package_name": "com.noehum7.tindnet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAefJyxurdRCQN078jOwxcrPxRqFZD6DLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
