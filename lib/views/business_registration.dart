@@ -1,21 +1,24 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'app_colors.dart';
-import 'package:tindnet/auth/utils/validators_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import '../constants/app_colors.dart';
+import '../auth/utils/validators_utils.dart';
 
-class CustomerRegistrationScreen extends StatelessWidget {
+class BusinessRegistrationScreen extends StatefulWidget {
+  @override
+  _BusinessRegistrationScreenState createState() => _BusinessRegistrationScreenState();
+}
+
+class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final FormValidator formValidator = FormValidator();
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _cifController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  String? _selectedService;
 
   void showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -37,10 +40,10 @@ class CustomerRegistrationScreen extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.8,
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: Form(
+              key: _formKey,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -61,26 +64,9 @@ class CustomerRegistrationScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.8,
                     color: AppColors.secondaryColor,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/business_registration');
-                    },
-                    child:
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '¿Eres una empresa? Pulsa aquí',
-                          style: TextStyle(
-                              fontSize: 10, color: AppColors.primaryColor),
-                        ),
-                      ],
-                    ),
-                  ),
                   SizedBox(height: 40.0),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.8,
-                    // height: MediaQuery.of(context).size.height * 0.7,
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(38.0),
@@ -88,7 +74,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Text(
-                          'REGISTRO CLIENTES',
+                          'REGISTRO EMPRESAS',
                           style: TextStyle(
                               fontSize: 18.0, fontWeight: FontWeight.bold),
                         ),
@@ -97,7 +83,15 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           controller: _nameController,
                           validator: formValidator.isValidName,
                           decoration: InputDecoration(
-                            labelText: 'Nombre',
+                            labelText: 'Nombre o razón social',
+                          ),
+                        ),
+                        SizedBox(height: 20.0),
+                        TextFormField(
+                          controller: _cifController,
+                          validator: formValidator.isValidCif,
+                          decoration: InputDecoration(
+                            labelText: 'CIF',
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -109,6 +103,31 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 20.0),
+                        DropdownButtonFormField(
+                          validator: formValidator.isValidService,
+                          decoration: InputDecoration(
+                            labelText: 'Servicios',
+                          ),
+                          items: <String>[
+                            'Productos',
+                            'Viajes',
+                            'Eventos',
+                            'Ocio',
+                            'Restauración',
+                            'Otros'
+                          ].map((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _selectedService = newValue;
+                            });
+                          },
+                        ),
+                        SizedBox(height: 20.0),
                         TextFormField(
                           controller: _passwordController,
                           validator: formValidator.isValidPass,
@@ -118,43 +137,33 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           ),
                           obscureText: true,
                         ),
-                        SizedBox(height: 20.0),
-                        TextFormField(
-                          controller: _phoneController,
-                          validator: formValidator.isValidPhone,
-                          decoration: InputDecoration(
-                            labelText: 'Teléfono',
-                            errorMaxLines: 2,
-                          ),
-                        ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 40.0),
                         ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               try {
                                 UserCredential userCredential =
-                                    await _auth.createUserWithEmailAndPassword(
-                                        email: _emailController.text,
-                                        password: _passwordController.text);
-                                print(
-                                    "User registered: ${userCredential.user}");
-                                showSnackBar(context, 'Usuario registrado correctamente.');
-                                // Save user data to Firestore
+                                await _auth.createUserWithEmailAndPassword(
+                                    email: _emailController.text,
+                                    password: _passwordController.text);
+                                print("Business registered: ${userCredential.user}");
+                                showSnackBar(context, 'Empresa registrada correctamente.');
+                                // Save business data to Firestore
                                 await FirebaseFirestore.instance
-                                    .collection('users')
+                                    .collection('businesses')
                                     .doc(userCredential.user!.uid)
                                     .set({
                                   'email': _emailController.text,
                                   'name': _nameController.text,
-                                  'phone': _phoneController.text,
+                                  'cif': _cifController.text,
+                                  'service': _selectedService,
                                 });
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'weak-password') {
                                   print('The password provided is too weak.');
                                   showSnackBar(context, 'La contraseña es demasiado débil.');
                                 } else if (e.code == 'email-already-in-use') {
-                                  print(
-                                      'The account already exists for that email.');
+                                  print('The account already exists for that email.');
                                   showSnackBar(context, 'El email ya está en uso.');
                                 }
                               } catch (e) {
@@ -162,11 +171,10 @@ class CustomerRegistrationScreen extends StatelessWidget {
                                 showSnackBar(context, e.toString());
                               }
                             }
+
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                AppColors.primaryColor, // Color de fondo
-                          ),
+                              backgroundColor: AppColors.primaryColor),
                           child: Text(
                             'REGISTRARSE',
                             style: TextStyle(fontSize: 15, color: Colors.white),
@@ -188,7 +196,6 @@ class CustomerRegistrationScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              // ),
             ),
           ),
         ),

@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
+import 'package:tindnet/views/services_screen.dart';
+import '../constants/app_colors.dart';
 import 'package:tindnet/auth/utils/validators_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../models/business.dart';
 import 'home.dart';
-// import 'home.dart';
 
 // import 'package:flutter_with_firebase_owp/auth/structure/controllers/auth_controller.dart';
 
@@ -63,11 +63,9 @@ class _LoginScreenState extends State<LoginScreen> {
       //   context,
       //   MaterialPageRoute(builder: (context) => HomeScreen()),
       // );
-      Navigator.pushNamed(
-          context, '/home');
+      Navigator.pushNamed(context, '/home');
     }
   }
-
 
   @override
   void initState() {
@@ -133,7 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           fillColor: Colors.white,
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _isPasswordHidden ? Icons.visibility : Icons.visibility_off, color: AppColors.secondaryColor,
+                              _isPasswordHidden
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: AppColors.secondaryColor,
                             ),
                             onPressed: _togglePasswordVisibility,
                           ),
@@ -165,13 +166,35 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                             print("User signed in: ${userCredential.user}");
                             showSnackBar(context, 'Usuario correcto.');
+
                             if (rememberMe) {
                               await rememberUser(userCredential);
                             }
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => HomeScreen()),
-                            );
+
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                            // );
+
+                            // // Crear una empresa de prueba
+                            // Business testBusiness = Business(
+                            //   photoUrl: 'assets/images/logoceleste.jpg',
+                            //   companyName: 'Test Company',
+                            //   location: 'Test Location',
+                            //   aboutUs: 'About us test',
+                            //   contactPhone: 'Test Phone',
+                            //   contactEmail: 'Test Email',
+                            //   website: 'Test Website',
+                            // );
+                            //
+                            // // Navegar a ServiceScreen con la empresa de prueba
+                            // Navigator.pushReplacement(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) =>
+                            //           ServiceScreen(business: testBusiness)),
+                            // );
+                            Navigator.pushNamed(context, '/services');
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'invalid-credential') {
                               print(
