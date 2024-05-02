@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tindnet/home.dart';
 import 'firebase_options.dart';
 import 'welcome_screen.dart';
 import 'login.dart';
@@ -29,15 +30,34 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         scaffoldBackgroundColor: AppColors.backgroundColor,
         textTheme: TextTheme(
-            bodyLarge: TextStyle(color: AppColors.primaryColor), //Estilo de los textos
+          bodyLarge:
+              TextStyle(color: AppColors.primaryColor), //Estilo de los textos
           // labelLarge: TextStyle(color: Colors.white) Estilo de los botones
-        )
+        ),
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return AppColors.primaryColor;
+            }
+            return null;
+          }),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: AppColors.primaryColor, width: 2.0),
+          ),
+          labelStyle: TextStyle(color: AppColors.primaryColor),
+        ),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: AppColors.primaryColor, // Color del cursor
+          ),
       ),
       routes: {
         '/welcome': (context) => WelcomeScreen(),
         '/login': (context) => LoginScreen(),
         '/customer_registration': (context) => CustomerRegistrationScreen(),
         '/business_registration': (context) => BusinessRegistrationScreen(),
+        '/home': (context) => HomeScreen(),
       },
       home:
           WelcomeScreen(), // Se ha establecido WelcomeScreen como página principal

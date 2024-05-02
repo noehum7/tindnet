@@ -2,19 +2,34 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'app_colors.dart';
-import 'package:get/get.dart';
 import 'package:tindnet/auth/utils/validators_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomerRegistrationScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final FormValidator formValidator = FormValidator();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
 
-  final FormValidator formValidator = FormValidator();
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message, textAlign: TextAlign.center),
+      behavior: SnackBarBehavior.floating,
+      // Hace que el SnackBar flote
+      shape: RoundedRectangleBorder(
+        // Le da una forma redondeada
+        borderRadius: BorderRadius.circular(24),
+      ),
+      backgroundColor: AppColors.primaryColor,
+      elevation: 5.0, // Añade una sombra al SnackBar
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +65,14 @@ class CustomerRegistrationScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.pushNamed(context, '/business_registration');
                     },
-                    child: Row(
+                    child:
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '¿Eres una empresa? Pulsa aquí',
                           style: TextStyle(
-                              fontSize: 15, color: AppColors.primaryColor),
+                              fontSize: 10, color: AppColors.primaryColor),
                         ),
                       ],
                     ),
@@ -74,9 +90,9 @@ class CustomerRegistrationScreen extends StatelessWidget {
                         Text(
                           'REGISTRO CLIENTES',
                           style: TextStyle(
-                              fontSize: 20.0, fontWeight: FontWeight.bold),
+                              fontSize: 18.0, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 30.0),
+                        SizedBox(height: 25.0),
                         TextFormField(
                           controller: _nameController,
                           validator: formValidator.isValidName,
@@ -108,17 +124,13 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           validator: formValidator.isValidPhone,
                           decoration: InputDecoration(
                             labelText: 'Teléfono',
+                            errorMaxLines: 2,
                           ),
                         ),
                         SizedBox(height: 20.0),
                         ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              //   print("Correcto");
-                              //   // authController.registerWithEmailAndPassword();
-                              // } else {
-                              //   print("Vuelve a intentarlo");
-                              // }
                               try {
                                 UserCredential userCredential =
                                     await _auth.createUserWithEmailAndPassword(
@@ -126,6 +138,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                                         password: _passwordController.text);
                                 print(
                                     "User registered: ${userCredential.user}");
+                                showSnackBar(context, 'Usuario registrado correctamente.');
                                 // Save user data to Firestore
                                 await FirebaseFirestore.instance
                                     .collection('users')
@@ -134,17 +147,19 @@ class CustomerRegistrationScreen extends StatelessWidget {
                                   'email': _emailController.text,
                                   'name': _nameController.text,
                                   'phone': _phoneController.text,
-                                  // Add other user properties
                                 });
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'weak-password') {
                                   print('The password provided is too weak.');
+                                  showSnackBar(context, 'La contraseña es demasiado débil.');
                                 } else if (e.code == 'email-already-in-use') {
                                   print(
                                       'The account already exists for that email.');
+                                  showSnackBar(context, 'El email ya está en uso.');
                                 }
                               } catch (e) {
                                 print(e);
+                                showSnackBar(context, e.toString());
                               }
                             }
                           },
@@ -154,13 +169,13 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           ),
                           child: Text(
                             'REGISTRARSE',
-                            style: TextStyle(fontSize: 18, color: Colors.white),
+                            style: TextStyle(fontSize: 15, color: Colors.white),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 30.0),
+                  SizedBox(height: 20.0),
                   TextButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/login');
@@ -168,7 +183,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                     child: Text(
                       '¿Ya tienes una cuenta? Inicia sesión',
                       style: TextStyle(
-                          fontSize: 15, color: AppColors.primaryColor),
+                          fontSize: 10, color: AppColors.primaryColor),
                     ),
                   ),
                 ],

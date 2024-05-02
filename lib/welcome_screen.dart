@@ -20,7 +20,7 @@ class WelcomeScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 50), // Espacio entre la imagen y el texto
+            SizedBox(height: 30), // Espacio entre la imagen y el texto
             Container(
               width: MediaQuery.of(context).size.width * 0.8, // Ancho del 80% de la pantalla
               child: Column(
@@ -28,7 +28,7 @@ class WelcomeScreen extends StatelessWidget {
                   Text(
                     'Bienvenido a TindNet',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 45, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
+                    style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
                   ),
                   SizedBox(height: 70), // Espacio entre el texto y el botón
                   ElevatedButton(
@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                       children: [
                         Text(
                           'COMENZAR',
-                          style: TextStyle(fontSize: 25, color: Colors.white) // Tamaño de la fuente del texto
+                          style: TextStyle(fontSize: 20, color: Colors.white) // Tamaño de la fuente del texto
                         ),
                         SizedBox(width: 50), // Espacio entre el texto y el icono
                         Icon(Icons.arrow_forward, size: 35, color: Colors.white), // Icono de flecha hacia la derecha

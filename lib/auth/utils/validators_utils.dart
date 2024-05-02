@@ -3,13 +3,13 @@ import 'package:get/get.dart';
 class FormValidator {
   String? isValidName(String? text) {
     if (text == null || text.isEmpty || text.length < 3) {
-      return "Este nombre no es válido";
+      return "El nombre no es válido.";
     }
     return null;
   }
 
   String? isValidEmail(String? text) {
-    return (text ?? "").isEmail ? null : "Este email no es válido";
+    return (text ?? "").isEmail ? null : "Este email no es válido.";
   }
 
   String? isValidPass(String? text) {
@@ -22,6 +22,20 @@ class FormValidator {
   String? isValidPhone(String? text) {
     if (text == null || text.length < 9) {
       return "El número de teléfono debe contener 9 dígitos.";
+    }
+    return null;
+  }
+
+  String? isValidCif(String? text) {
+    if (text == null || text.length < 9) {
+      return "El CIF debe contener 9 caracteres.";
+    }
+    return null;
+  }
+
+  String? isValidService(String? text) {
+    if (text == null || text.isEmpty) {
+      return "Debes seleccionar un servicio.";
     }
     return null;
   }

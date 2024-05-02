@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
-import 'package:get/get.dart';
 import 'package:tindnet/auth/utils/validators_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'home.dart';
+// import 'home.dart';
 
 // import 'package:flutter_with_firebase_owp/auth/structure/controllers/auth_controller.dart';
 
@@ -13,6 +16,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
+  bool _isPasswordHidden = true;
+
   final _formKey = GlobalKey<FormState>();
 
   final FormValidator formValidator = FormValidator();
@@ -23,6 +28,52 @@ class _LoginScreenState extends State<LoginScreen> {
   // Define the controllers for the email and password fields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordHidden = !_isPasswordHidden;
+    });
+  }
+
+  // Define una función para mostrar el SnackBar con el contexto apropiado
+  void showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message, textAlign: TextAlign.center),
+      behavior: SnackBarBehavior.floating,
+      // Hace que el SnackBar flote
+      shape: RoundedRectangleBorder(
+        // Le da una forma redondeada
+        borderRadius: BorderRadius.circular(24),
+      ),
+      backgroundColor: AppColors.primaryColor,
+      elevation: 5.0, // Añade una sombra al SnackBar
+    ));
+  }
+
+  Future<void> rememberUser(UserCredential userCredential) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', userCredential.user!.uid);
+  }
+
+  Future<void> checkRememberedUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? userId = prefs.getString('userId');
+    if (userId != null) {
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => HomeScreen()),
+      // );
+      Navigator.pushNamed(
+          context, '/home');
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    checkRememberedUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +131,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
-                          suffixIcon: Icon(Icons.visibility),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _isPasswordHidden ? Icons.visibility : Icons.visibility_off, color: AppColors.secondaryColor,
+                            ),
+                            onPressed: _togglePasswordVisibility,
+                          ),
                         ),
-                        obscureText: true,
+                        obscureText: _isPasswordHidden,
                       ),
                       SizedBox(height: 10.0),
                       Row(
@@ -100,41 +156,32 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(height: 20.0),
                       ElevatedButton(
-                        onPressed: () async{
-                          // if (_formKey.currentState!.validate()) {
-                          //   // authController.loginWithEmailAndPassword();
-                          //   print("Correcto");
-                          // } else {
-                          //   print("vuelve a intentarlo");
-                          // }
+                        onPressed: () async {
                           try {
-                            UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+                            UserCredential userCredential =
+                                await _auth.signInWithEmailAndPassword(
                               email: _emailController.text,
                               password: _passwordController.text,
                             );
                             print("User signed in: ${userCredential.user}");
-
-                            // Show a success message
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text('Usuario correcto, has accedido'))
+                            showSnackBar(context, 'Usuario correcto.');
+                            if (rememberMe) {
+                              await rememberUser(userCredential);
+                            }
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomeScreen()),
                             );
                           } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              print('No user found for that email.');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('No user found for that email.'))
-                              );
-                            } else if (e.code == 'wrong-password') {
-                              print('Wrong password provided for that user.');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('Wrong password provided for that user.'))
-                              );
+                            if (e.code == 'invalid-credential') {
+                              print(
+                                  'El correo electrónico o la contraseña no son correctos.');
+                              showSnackBar(context,
+                                  'El correo electrónico o la contraseña no son correctos.');
                             }
                           } catch (e) {
                             print(e);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(e.toString()))
-                            );
+                            showSnackBar(context, e.toString());
                           }
                         },
                         style: ElevatedButton.styleFrom(
