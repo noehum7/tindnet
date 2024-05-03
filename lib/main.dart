@@ -1,8 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tindnet/views/business_screen.dart';
 import 'package:tindnet/views/home.dart';
-import 'package:tindnet/views/services_screen.dart';
+import 'package:tindnet/views/customer_screen.dart';
 import 'auth/firebase_options.dart';
 import 'package:tindnet/views/welcome_screen.dart';
 import 'models/business.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'TindNet App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue, //Color de la app
         scaffoldBackgroundColor: AppColors.backgroundColor,
         textTheme: TextTheme(
           bodyLarge:
@@ -56,36 +57,15 @@ class MyApp extends StatelessWidget {
         ),
       ),
       routes: {
-        '/welcome': (context) => WelcomeScreen(),
-        '/login': (context) => LoginScreen(),
-        '/customer_registration': (context) => CustomerRegistrationScreen(),
-        '/business_registration': (context) => BusinessRegistrationScreen(),
-        // '/home': (context) => HomeScreen(),
-        '/services': (context) => ServiceScreen(
-              businesses: [
-                Business(
-                    photoUrl: 'assets/images/urbansport.png',
-                    companyName: 'UrbanSport',
-                    location: 'Málaga',
-                    aboutUs: 'Somos una tienda de deportes multimarca.',
-                    contactPhone: '123456789',
-                    contactEmail: 'urbansport@gmail.com',
-                    website: 'www.urbansport.es'),
-                Business(
-                  photoUrl: 'assets/images/logoazul.jpg',
-                  companyName: 'Otra Empresa',
-                  location: 'Sevilla',
-                  aboutUs: 'Somos una empresa de tecnología.',
-                  contactPhone: '987654321',
-                  contactEmail: 'otraempresa@gmail.com',
-                  website: 'www.otraempresa.es',
-                ),
-                // Añade aquí más empresas
-              ],
-            ),
+        '/welcome': (context) => WelcomeScreen(), //Pantalla de inicio de la app
+        '/login': (context) => LoginScreen(), //Pantalla de login
+        '/customer_registration': (context) => CustomerRegistrationScreen(), //Pantalla de registro de clientes
+        '/business_registration': (context) => BusinessRegistrationScreen(), //Pantalla de registro de empresas
+        '/services': (context) => ServiceScreen(), //Pantalla principal de los clientes, que te muestra las empresas tipo Tinder
+        '/business': (context) => BusinessProfileScreen(), //Pantalla principal de las empresas
       },
       home:
-          WelcomeScreen(), // Se ha establecido WelcomeScreen como página principal
+          WelcomeScreen(), // Se ha establecido WelcomeScreen como página de inicio de la app
     );
   }
 }

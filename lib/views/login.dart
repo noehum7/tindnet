@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tindnet/views/services_screen.dart';
+import 'package:tindnet/views/customer_screen.dart';
 import '../constants/app_colors.dart';
 import 'package:tindnet/auth/utils/validators_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/business.dart';
+import 'business_screen.dart';
 import 'home.dart';
 
 // import 'package:flutter_with_firebase_owp/auth/structure/controllers/auth_controller.dart';
@@ -158,6 +160,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 20.0),
                       ElevatedButton(
                         onPressed: () async {
+                          if (_emailController.text.isEmpty ||
+                              _passwordController.text.isEmpty) {
+                            showSnackBar(context,
+                                'Por favor, rellene todos los campos.');
+                            return;
+                          }
                           try {
                             UserCredential userCredential =
                                 await _auth.signInWithEmailAndPassword(
@@ -165,36 +173,39 @@ class _LoginScreenState extends State<LoginScreen> {
                               password: _passwordController.text,
                             );
                             print("User signed in: ${userCredential.user}");
-                            showSnackBar(context, 'Usuario correcto.');
+                            // showSnackBar(context, 'Usuario correcto.');
 
                             if (rememberMe) {
                               await rememberUser(userCredential);
                             }
 
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                            // );
+                            // Obtiene el ID del usuario
+                            String userId = userCredential.user!.uid;
 
-                            // // Crear una empresa de prueba
-                            // Business testBusiness = Business(
-                            //   photoUrl: 'assets/images/logoceleste.jpg',
-                            //   companyName: 'Test Company',
-                            //   location: 'Test Location',
-                            //   aboutUs: 'About us test',
-                            //   contactPhone: 'Test Phone',
-                            //   contactEmail: 'Test Email',
-                            //   website: 'Test Website',
-                            // );
-                            //
-                            // // Navegar a ServiceScreen con la empresa de prueba
-                            // Navigator.pushReplacement(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           ServiceScreen(business: testBusiness)),
-                            // );
-                            Navigator.pushNamed(context, '/services');
+                            // Intenta obtener el documento del usuario de la tabla de usuarios
+                            DocumentSnapshot userDoc = await FirebaseFirestore
+                                .instance
+                                .collection('users')
+                                .doc(userId)
+                                .get();
+
+                            // Navigator.pushNamed(context, '/services');
+
+                            if (userDoc.exists) {
+                              // Si el usuario existe en la tabla de usuarios, redirige a la pantalla de cliente
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ServiceScreen()),
+                              );
+                            } else {
+                              // Si el usuario no existe en la tabla de usuarios, asume que es una empresa y redirige a la pantalla de empresa
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BusinessProfileScreen()),
+                              );
+                            }
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'invalid-credential') {
                               print(

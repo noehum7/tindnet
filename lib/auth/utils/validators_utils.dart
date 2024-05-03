@@ -40,6 +40,44 @@ class FormValidator {
     return null;
   }
 
+  String? isValidUrl(String? text) {
+    if (text == null || text.isEmpty) {
+      return "La URL de la imagen de perfil no puede estar vacía.";
+    }
+    // Puedes añadir más lógica aquí para comprobar si la URL es válida
+    return null;
+  }
+
+  String? isValidLocation(String? text) {
+    if (text == null || text.isEmpty) {
+      return "La dirección de la empresa no puede estar vacía.";
+    }
+    return null;
+  }
+
+  String? isValidAboutUs(String? text) {
+    if (text == null || text.isEmpty) {
+      return "El campo Sobre nosotros no puede estar vacío.";
+    }
+    if (text.split(' ').length > 30) {
+      return 'Por favor, introduce un máximo de 30 palabras.';
+    }
+    return null;
+  }
+
+  String? isValidWeb(String? text) {
+    if (text == null || text.isEmpty) {
+      return "La página web de la empresa no puede estar vacía.";
+    }
+    // Expresión regular para validar la URL
+    RegExp regex = RegExp(
+        r'^(https?:\/\/)?(([\da-z\.-]+)\.([a-z\.]{2,6})|(([0-9]{1,3}\.){3}[0-9]{1,3}))([\/\w \.-]*)*\/?$');
+    if (!regex.hasMatch(text)) {
+      return "Por favor, introduce una URL válida.";
+    }
+    return null;
+  }
+
 // static String? validateEmail(String? value) {
 //     if (value == null || value.isEmpty) {
 //       return 'Email is required';

@@ -4,9 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:tindnet/constants/app_colors.dart';
 import 'package:tindnet/auth/utils/validators_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../widgets/custom_toast.dart';
 
 class CustomerRegistrationScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  CustomToast customToast = CustomToast();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -16,20 +18,6 @@ class CustomerRegistrationScreen extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
-
-  void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message, textAlign: TextAlign.center),
-      behavior: SnackBarBehavior.floating,
-      // Hace que el SnackBar flote
-      shape: RoundedRectangleBorder(
-        // Le da una forma redondeada
-        borderRadius: BorderRadius.circular(24),
-      ),
-      backgroundColor: AppColors.primaryColor,
-      elevation: 5.0, // Añade una sombra al SnackBar
-    ));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +124,10 @@ class CustomerRegistrationScreen extends StatelessWidget {
                                     await _auth.createUserWithEmailAndPassword(
                                         email: _emailController.text,
                                         password: _passwordController.text);
-                                print(
-                                    "User registered: ${userCredential.user}");
-                                showSnackBar(context, 'Usuario registrado correctamente.');
+                                // print(
+                                //     "User registered: ${userCredential.user}");
+                                customToast.showSuccessToast("Usuario registrado correctamente!");
+
                                 // Save user data to Firestore
                                 await FirebaseFirestore.instance
                                     .collection('users')
@@ -148,18 +137,16 @@ class CustomerRegistrationScreen extends StatelessWidget {
                                   'name': _nameController.text,
                                   'phone': _phoneController.text,
                                 });
+
+                                Navigator.pushReplacementNamed(context, '/services'); //Redirigir si el registro es exitoso
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'weak-password') {
-                                  print('The password provided is too weak.');
-                                  showSnackBar(context, 'La contraseña es demasiado débil.');
+                                  customToast.showErrorToast('La contraseña es demasiado débil.');
                                 } else if (e.code == 'email-already-in-use') {
-                                  print(
-                                      'The account already exists for that email.');
-                                  showSnackBar(context, 'El email ya está en uso.');
+                                  customToast.showErrorToast('El email ya está en uso.');
                                 }
                               } catch (e) {
-                                print(e);
-                                showSnackBar(context, e.toString());
+                                customToast.showInfoToast(e.toString());
                               }
                             }
                           },
