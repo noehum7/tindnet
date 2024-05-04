@@ -170,14 +170,15 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                         initialValue: business?.name,
                         validator: _validator.isValidName,
                         decoration: InputDecoration(
-                            labelText: 'Nombre o razón social'),
+                            labelText: 'Nombre o razón social'
+                            ,errorMaxLines: 2),
                         onChanged: (value) => business?.name = value,
                       ),
                       SizedBox(height: 10.0),
                       TextFormField(
                         initialValue: business?.cif,
                         validator: _validator.isValidCif,
-                        decoration: InputDecoration(labelText: 'CIF'),
+                        decoration: InputDecoration(labelText: 'CIF', errorMaxLines: 2),
                         onChanged: (value) => business?.cif = value,
                       ),
                       SizedBox(height: 10.0),
@@ -198,15 +199,16 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                             ))
                             .toList(),
                         decoration: InputDecoration(
-                            labelText: 'Servicio'),
+                            labelText: 'Servicio', errorMaxLines: 2),
                         onChanged: (value) => business?.service = value!,
                       ),
                       SizedBox(height: 10.0),
                       TextFormField(
                         initialValue: business?.phone,
                         validator: _validator.isValidPhone,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
-                            labelText: 'Teléfono'),
+                            labelText: 'Teléfono', errorMaxLines: 2),
                         onChanged: (value) => business?.phone = value,
                       ),
                       SizedBox(height: 10.0),
@@ -214,7 +216,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                         initialValue: business?.url,
                         validator: _validator.isValidUrl,
                         decoration:
-                        InputDecoration(labelText: 'Imagen de perfil'),
+                        InputDecoration(labelText: 'Imagen de perfil', errorMaxLines: 2),
                         onChanged: (value) => business?.url = value,
                       ),
                       SizedBox(height: 10.0),
@@ -222,7 +224,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                         initialValue: business?.location,
                         validator: _validator.isValidLocation,
                         decoration: InputDecoration(
-                            labelText: 'Dirección de la empresa'),
+                            labelText: 'Dirección de la empresa', errorMaxLines: 2),
                         onChanged: (value) => business?.location = value,
                       ),
                       SizedBox(height: 10.0),
@@ -230,7 +232,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                         initialValue: business?.aboutUs,
                         validator: _validator.isValidAboutUs,
                         decoration:
-                        InputDecoration(labelText: 'Sobre nosotros'),
+                        InputDecoration(labelText: 'Sobre nosotros', errorMaxLines: 2),
                         // maxLines: 2,
                         // validator: (value) {
                         //   if (value != null && value.split(' ').length > 30) {

@@ -20,7 +20,7 @@ class FormValidator {
   }
 
   String? isValidPhone(String? text) {
-    if (text == null || text.length < 9) {
+    if (text == null || text.length != 9 || int.tryParse(text) == null) {
       return "El número de teléfono debe contener 9 dígitos.";
     }
     return null;

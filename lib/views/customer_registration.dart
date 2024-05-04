@@ -110,6 +110,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                         TextFormField(
                           controller: _phoneController,
                           validator: formValidator.isValidPhone,
+                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             labelText: 'Teléfono',
                             errorMaxLines: 2,

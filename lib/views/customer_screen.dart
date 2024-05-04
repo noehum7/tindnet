@@ -183,6 +183,15 @@ class ServiceScreen extends StatelessWidget {
                                   height: MediaQuery.of(context).size.height * 0.25,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+    // Si ocurre un error al cargar la imagen, se devuelve una imagen de respaldo
+    return Image.network(
+      'https://via.placeholder.com/150',
+      height: MediaQuery.of(context).size.height * 0.25,
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
+  },
                                 ),//En este caso como van a ser url de imágenes usamos network, sino sería asset
                                 SizedBox(height: 10.0),
                                 Align(
