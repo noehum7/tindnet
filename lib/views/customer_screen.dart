@@ -7,7 +7,7 @@ import 'package:tindnet/constants/app_colors.dart';
 import 'package:tindnet/models/business.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
-import '../widgets/custom_drawer.dart';
+import '../widgets/custom_drawer_customer.dart';
 
 class ServiceScreen extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -37,10 +37,7 @@ class ServiceScreen extends StatelessWidget {
             return Scaffold(
               appBar: AppBar(
                 title: Text("TindNet"),
-                toolbarHeight: MediaQuery
-                    .of(context)
-                    .size
-                    .height * 0.07,
+                toolbarHeight: MediaQuery.of(context).size.height * 0.07,
               ),
               // drawer: Drawer(
               //   child: Container(
@@ -140,16 +137,15 @@ class ServiceScreen extends StatelessWidget {
               //     ),
               //   ),
               // ),
-              drawer: CustomDrawer(currentPage: 'Inicio'),
+              drawer: CustomDrawerCustomer(currentPage: 'Inicio'),
               body: Center(
                 child: Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.95,
+                  width: MediaQuery.of(context).size.width * 0.95,
                   child: CardSwiper(
                     cardsCount: businesses.length,
-                    numberOfCardsDisplayed: businesses.length <= 3 ? businesses.length : 3, // Asegúrate de que numberOfCardsDisplayed no exceda cardsCount
+                    numberOfCardsDisplayed:
+                        businesses.length <= 3 ? businesses.length : 3,
+                    // Asegúrate de que numberOfCardsDisplayed no exceda cardsCount
                     cardBuilder: (context, index, realIndex, cardIndex) {
                       return Container(
                         decoration: BoxDecoration(
@@ -179,20 +175,27 @@ class ServiceScreen extends StatelessWidget {
                                 //   fit: BoxFit.cover,
                                 // ),
                                 Image.network(
-                                  businesses[index].url ?? 'https://via.placeholder.com/150',
-                                  height: MediaQuery.of(context).size.height * 0.25,
+                                  businesses[index].url ??
+                                      'https://via.placeholder.com/150',
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.25,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-    // Si ocurre un error al cargar la imagen, se devuelve una imagen de respaldo
-    return Image.network(
-      'https://via.placeholder.com/150',
-      height: MediaQuery.of(context).size.height * 0.25,
-      width: double.infinity,
-      fit: BoxFit.cover,
-    );
-  },
-                                ),//En este caso como van a ser url de imágenes usamos network, sino sería asset
+                                  errorBuilder: (BuildContext context,
+                                      Object exception,
+                                      StackTrace? stackTrace) {
+                                    // Si ocurre un error al cargar la imagen, se devuelve una imagen de respaldo
+                                    return Image.network(
+                                      'https://via.placeholder.com/150',
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.25,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
+                                ),
+                                //En este caso como van a ser url de imágenes usamos network, sino sería asset
                                 SizedBox(height: 10.0),
                                 Align(
                                   alignment: Alignment.centerLeft,
@@ -239,7 +242,8 @@ class ServiceScreen extends StatelessWidget {
                                 SizedBox(height: 20.0),
                                 Row(
                                   children: <Widget>[
-                                    Icon(Icons.work, size: 20), // Icono de servicios
+                                    Icon(Icons.work, size: 20),
+                                    // Icono de servicios
                                     SizedBox(width: 10.0),
                                     Text(businesses[index].service,
                                         style: TextStyle(fontSize: 16)),
@@ -250,8 +254,9 @@ class ServiceScreen extends StatelessWidget {
                                   children: <Widget>[
                                     Icon(Icons.location_on, size: 20),
                                     SizedBox(width: 10.0),
-                                    Text(businesses[index].location ??
-                                        'Ubicación no disponible',
+                                    Text(
+                                        businesses[index].location ??
+                                            'Ubicación no disponible',
                                         style: TextStyle(fontSize: 16)),
                                   ],
                                 ),
@@ -261,8 +266,9 @@ class ServiceScreen extends StatelessWidget {
                                   children: <Widget>[
                                     Icon(Icons.phone, size: 20),
                                     SizedBox(width: 10.0),
-                                    Text(businesses[index].phone ??
-                                        'Teléfono no disponible',
+                                    Text(
+                                        businesses[index].phone ??
+                                            'Teléfono no disponible',
                                         style: TextStyle(fontSize: 16)),
                                   ],
                                 ),
@@ -283,8 +289,9 @@ class ServiceScreen extends StatelessWidget {
                                     Icon(Icons.web, size: 20),
                                     SizedBox(width: 10.0),
                                     // Espacio entre los elementos
-                                    Text(businesses[index].web ??
-                                        'Web no disponible',
+                                    Text(
+                                        businesses[index].web ??
+                                            'Web no disponible',
                                         style: TextStyle(fontSize: 16)),
                                   ],
                                 ),
@@ -294,7 +301,7 @@ class ServiceScreen extends StatelessWidget {
                                   child: Container(
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
                                         Icon(Icons.chat,
                                             color: AppColors.primaryColor,

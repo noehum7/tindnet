@@ -2,9 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tindnet/auth/utils/validators_utils.dart';
+import 'package:tindnet/widgets/custom_drawer_business.dart';
 import '../constants/app_colors.dart';
 import '../models/business.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+/*
+Pantalla principal cuando una empresa se loguea.
+ */
 
 class BusinessProfileScreen extends StatefulWidget {
   @override
@@ -60,77 +65,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
               .size
               .height * 0.07,
         ),
-        drawer: Drawer(
-          child: Container(
-            color: AppColors.welcomeColor,
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: <Widget>[
-                DrawerHeader(
-                  child: null,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage('assets/images/fondo.jpg'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 20),
-                ListTile(
-                  leading: Icon(Icons.person, color: AppColors.primaryColor),
-                  title: Text('Mi Perfil',
-                      style: TextStyle(
-                          fontSize: 20.0, color: AppColors.primaryColor)),
-                  onTap: () {
-                    // Navega a la pantalla de perfil
-                  },
-                ),
-                SizedBox(height: 20),
-                ListTile(
-                  leading: Icon(
-                      Icons.chat_bubble, color: AppColors.primaryColor),
-                  title: Text('Chats',
-                      style: TextStyle(
-                          fontSize: 20.0, color: AppColors.primaryColor)),
-                  onTap: () {
-                    // Navega a la pantalla de chat
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.star, color: AppColors.primaryColor),
-                  title: Text('Reseñas',
-                      style: TextStyle(
-                          fontSize: 20.0, color: AppColors.primaryColor)),
-                  onTap: () {
-                    // Navega a la pantalla de reseñas
-                  },
-                ),
-                SizedBox(height: 20),
-                ListTile(
-                  leading: Icon(Icons.settings, color: AppColors.primaryColor),
-                  title: Text('Ajustes',
-                      style: TextStyle(
-                          fontSize: 20.0, color: AppColors.primaryColor)),
-                  onTap: () {
-                    // Navega a la pantalla de ajustes
-                  },
-                ),
-                SizedBox(height: 20),
-                ListTile(
-                  leading: Icon(Icons.logout, color: AppColors.primaryColor),
-                  title: Text('Cerrar sesión',
-                      style: TextStyle(
-                          fontSize: 20.0, color: AppColors.primaryColor)),
-                  onTap: () async {
-                    // Cierra la sesión del usuario
-                    await FirebaseAuth.instance.signOut();
-                    Navigator.pushNamed(context, '/login');
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
+        drawer: CustomDrawerBusiness(currentPage: 'Mi Perfil'),
         // body: FutureBuilder<Business>(
         //   future: getBusinessData(),
         //   builder: (context, snapshot) {
@@ -252,7 +187,10 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                       ),
                       SizedBox(height: 30.0),
                       ElevatedButton(
-                        child: Text('Guardar cambios'),
+                        child: Text('Guardar cambios',
+                            style: TextStyle(
+                                fontSize: 18,
+                                color: AppColors.primaryColor)),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();

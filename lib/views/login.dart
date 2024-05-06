@@ -5,9 +5,8 @@ import 'package:tindnet/views/customer_screen.dart';
 import '../constants/app_colors.dart';
 import 'package:tindnet/auth/utils/validators_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/business.dart';
+import '../widgets/custom_toast.dart';
 import 'business_screen.dart';
-import 'home.dart';
 
 // import 'package:flutter_with_firebase_owp/auth/structure/controllers/auth_controller.dart';
 
@@ -19,7 +18,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   bool _isPasswordHidden = true;
-
+  CustomToast customToast = CustomToast();
+  
   final _formKey = GlobalKey<FormState>();
 
   final FormValidator formValidator = FormValidator();
@@ -36,22 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isPasswordHidden = !_isPasswordHidden;
     });
   }
-
-  // Define una función para mostrar el SnackBar con el contexto apropiado
-  void showSnackBar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(message, textAlign: TextAlign.center),
-      behavior: SnackBarBehavior.floating,
-      // Hace que el SnackBar flote
-      shape: RoundedRectangleBorder(
-        // Le da una forma redondeada
-        borderRadius: BorderRadius.circular(24),
-      ),
-      backgroundColor: AppColors.primaryColor,
-      elevation: 5.0, // Añade una sombra al SnackBar
-    ));
-  }
-
+  
   Future<void> rememberUser(UserCredential userCredential) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', userCredential.user!.uid);
@@ -61,11 +46,28 @@ class _LoginScreenState extends State<LoginScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userId = prefs.getString('userId');
     if (userId != null) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => HomeScreen()),
-      // );
-      Navigator.pushNamed(context, '/home');
+      // Intenta obtener el documento del usuario de la tabla de usuarios
+      DocumentSnapshot userDoc = await FirebaseFirestore
+          .instance
+          .collection('users')
+          .doc(userId)
+          .get();
+
+      if (userDoc.exists) {
+        // Si el usuario existe en la tabla de usuarios, redirige a la pantalla de cliente
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ServiceScreen()),
+        );
+      } else {
+        // Si el usuario no existe en la tabla de usuarios, asume que es una empresa y redirige a la pantalla de empresa
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => BusinessProfileScreen()),
+        );
+      }
     }
   }
 
@@ -162,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () async {
                           if (_emailController.text.isEmpty ||
                               _passwordController.text.isEmpty) {
-                            showSnackBar(context,
+                            customToast.showInfoToast(
                                 'Por favor, rellene todos los campos.');
                             return;
                           }
@@ -172,8 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               email: _emailController.text,
                               password: _passwordController.text,
                             );
-                            print("User signed in: ${userCredential.user}");
-                            // showSnackBar(context, 'Usuario correcto.');
+                            customToast.showSuccessToast("Login correcto!");
 
                             if (rememberMe) {
                               await rememberUser(userCredential);
@@ -208,14 +209,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             }
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'invalid-credential') {
-                              print(
-                                  'El correo electrónico o la contraseña no son correctos.');
-                              showSnackBar(context,
-                                  'El correo electrónico o la contraseña no son correctos.');
+                              customToast.showErrorToast('El correo electrónico o la contraseña no son correctos.');
                             }
                           } catch (e) {
-                            print(e);
-                            showSnackBar(context, e.toString());
+                            customToast.showInfoToast(e.toString());
                           }
                         },
                         style: ElevatedButton.styleFrom(

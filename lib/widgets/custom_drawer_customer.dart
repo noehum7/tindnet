@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tindnet/constants/app_colors.dart';
 
-class CustomDrawer extends StatelessWidget {
+import '../views/login.dart';
+
+class CustomDrawerCustomer extends StatelessWidget {
   final String currentPage;
 
-  CustomDrawer({required this.currentPage});
+  Future<void> forgetUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userId');
+  }
+
+  CustomDrawerCustomer({required this.currentPage});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +49,7 @@ class CustomDrawer extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 20.0, color: currentPage == 'Búsqueda' ? AppColors.backgroundColor : AppColors.primaryColor)),
               onTap: () {
-                // Navigator.pushNamed(context, '/search_screen');
+                Navigator.pushNamed(context, '/search');
               },
             ),
             SizedBox(height: 15),
@@ -92,7 +100,12 @@ class CustomDrawer extends StatelessWidget {
                       fontSize: 20.0, color: AppColors.primaryColor)),
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.pushNamed(context, '/login');
+                await forgetUser();
+                // Navigator.pushNamed(context, '/login');
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
               },
             ),
           ],
