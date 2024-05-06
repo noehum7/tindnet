@@ -58,6 +58,69 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
     );
   }
 
+  void _showCompanyCardDialog(BuildContext context, Map<String, dynamic> data) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Column(
+          children: <Widget>[
+            // Aquí va la tarjeta de la empresa
+            Card(
+              child: Column(
+                children: <Widget>[
+                  ListTile(
+                    leading: Icon(Icons.business, size: 50),
+                    title: Text(data?['name'] ?? 'Nombre no disponible',
+                        style: TextStyle(fontSize: 20)),
+                    subtitle: Text(data?['description'] ?? 'Descripción no disponible',
+                        style: TextStyle(fontSize: 16)),
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.email, size: 20),
+                      SizedBox(width: 10.0),
+                      Text(data?['email'] ?? 'Email no disponible',
+                          style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  SizedBox(height: 10.0),
+                  Row(
+                    children: <Widget>[
+                      Icon(Icons.web, size: 20),
+                      SizedBox(width: 10.0),
+                      Text(data?['web'] ?? 'Web no disponible',
+                          style: TextStyle(fontSize: 16)),
+                    ],
+                  ),
+                  SizedBox(height: 12.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.chat, color: Colors.blue, size: 40),
+                        onPressed: () {
+                          // Aquí va la lógica para abrir el chat
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.favorite, color: Colors.red, size: 40),
+                        onPressed: () {
+                          // Aquí va la lógica para agregar a favoritos
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,12 +192,13 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                     businesses[index].data() as Map<String, dynamic>?;
                 return GestureDetector(
                   onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return buildBusinessDialog(data!);
-                      },
-                    );
+                    // showDialog(
+                    //   context: context,
+                    //   builder: (BuildContext context) {
+                    //     return buildBusinessDialog(data!);
+                    //   },
+                    // );
+                    _showCompanyCardDialog(context, data!);
                   },
                   child: Card(
                     child: ListTile(
