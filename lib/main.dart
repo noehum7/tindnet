@@ -13,10 +13,6 @@ import 'package:tindnet/views/customer_registration.dart';
 import 'views/business_registration.dart';
 import 'constants/app_colors.dart';
 
-// void main() {
-//   runApp(MyApp());
-// }
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -34,10 +30,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue, //Color de la app
         scaffoldBackgroundColor: AppColors.backgroundColor,
+        // fontFamily: 'Roboto',
         textTheme: TextTheme(
           bodyLarge:
               TextStyle(color: AppColors.primaryColor), //Estilo de los textos
-          // labelLarge: TextStyle(color: Colors.white) Estilo de los botones
+          // labelLarge: TextStyle(color: Colors.white) Estilo de los botones de la app
         ),
         checkboxTheme: CheckboxThemeData(
           fillColor: MaterialStateProperty.resolveWith((states) {

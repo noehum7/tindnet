@@ -100,38 +100,69 @@ class _SearchScreenState extends State<SearchScreen> {
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 20.0),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: TextFormField(
+                // Row(
+                //   children: <Widget>[
+                //     Expanded(
+                //       child: TextFormField(
+                //         onChanged: (value) {
+                //           setState(() {
+                //             companyName = value;
+                //           });
+                //         },
+                //       ),
+                //     ),
+                //     SizedBox(height: 20.0),
+                //     IconButton(
+                //       icon: Icon(Icons.search),
+                //       onPressed: () {
+                //         if (!companyName.isNotEmpty) {
+                //           customToast.showErrorToast(
+                //               "El campo de búsqueda no puede estar vacío.");
+                //         } else {
+                //           Navigator.push(
+                //             context,
+                //             MaterialPageRoute(
+                //               builder: (context) => SearchResultsScreen(
+                //                 selectedCategory: '',
+                //                 companyName: companyName,
+                //               ),
+                //             ),
+                //           );
+                //         }
+                //       },
+                //     ),
+                //   ],
+                // ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.welcomeColor,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.centerRight,
+                    children: <Widget>[
+                      TextField(
                         onChanged: (value) {
                           setState(() {
                             companyName = value;
                           });
                         },
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Nombre',
+                          contentPadding: EdgeInsets.only(right: 40.0, left: 20.0),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20.0),
-                    IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        if (!companyName.isNotEmpty) {
-                          customToast.showErrorToast(
-                              "El campo de búsqueda no puede estar vacío.");
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SearchResultsScreen(
-                                selectedCategory: '',
-                                companyName: companyName,
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                      Positioned(
+                        right: 10.0,
+                        child: Icon(
+                          Icons.search,
+                          color: AppColors.primaryColor,
+                          size: 30,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 SizedBox(height: 30.0),
                 ElevatedButton(

@@ -64,7 +64,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                         Text(
                           'REGISTRO EMPRESAS',
                           style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                              fontSize: 18.0, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
                         ),
                         SizedBox(height: 25.0),
                         TextFormField(
@@ -72,6 +72,12 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                           validator: formValidator.isValidName,
                           decoration: InputDecoration(
                             labelText: 'Nombre o razón social',
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -80,6 +86,12 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                           validator: formValidator.isValidCif,
                           decoration: InputDecoration(
                             labelText: 'CIF',
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -88,6 +100,12 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                           validator: formValidator.isValidEmail,
                           decoration: InputDecoration(
                             labelText: 'Email',
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -95,6 +113,12 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                           validator: formValidator.isValidService,
                           decoration: InputDecoration(
                             labelText: 'Servicios',
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                           items: <String>[
                             'Productos',
@@ -122,6 +146,12 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                           decoration: InputDecoration(
                             labelText: 'Contraseña',
                             errorMaxLines: 2,
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                           obscureText: true,
                         ),

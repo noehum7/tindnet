@@ -42,104 +42,6 @@ class ServiceScreen extends StatelessWidget {
                 title: Text("TindNet"),
                 toolbarHeight: MediaQuery.of(context).size.height * 0.07,
               ),
-              // drawer: Drawer(
-              //   child: Container(
-              //     color: AppColors.welcomeColor,
-              //     child: ListView(
-              //       padding: EdgeInsets.zero,
-              //       children: <Widget>[
-              //         DrawerHeader(
-              //           child: null,
-              //           decoration: BoxDecoration(
-              //             image: DecorationImage(
-              //               image: AssetImage('assets/images/fondo.jpg'),
-              //               fit: BoxFit.cover,
-              //             ),
-              //           ),
-              //         ),
-              //         SizedBox(height: 20),
-              //         ListTile(
-              //           leading:
-              //           Icon(Icons.home, color: AppColors.primaryColor),
-              //           title: Text('Inicio',
-              //               style: TextStyle(
-              //                   fontSize: 20.0, color: AppColors.primaryColor)),
-              //           onTap: () {
-              //             // Navega a la pantalla de búsqueda
-              //           },
-              //         ),
-              //         SizedBox(height: 20),
-              //         ListTile(
-              //           leading:
-              //           Icon(Icons.search, color: AppColors.primaryColor),
-              //           title: Text('Búsqueda',
-              //               style: TextStyle(
-              //                   fontSize: 20.0, color: AppColors.primaryColor)),
-              //           onTap: () {
-              //             // Navega a la pantalla de búsqueda
-              //           },
-              //         ),
-              //         SizedBox(height: 20),
-              //         ListTile(
-              //           leading: Icon(Icons.chat_bubble,
-              //               color: AppColors.primaryColor),
-              //           title: Text('Chats',
-              //               style: TextStyle(
-              //                   fontSize: 20.0, color: AppColors.primaryColor)),
-              //           onTap: () {
-              //             // Navega a la pantalla de chat
-              //           },
-              //         ),
-              //         SizedBox(height: 20),
-              //         ListTile(
-              //           leading:
-              //           Icon(Icons.person, color: AppColors.primaryColor),
-              //           title: Text('Mi Perfil',
-              //               style: TextStyle(
-              //                   fontSize: 20.0, color: AppColors.primaryColor)),
-              //           onTap: () {
-              //             // Navega a la pantalla de perfil
-              //           },
-              //         ),
-              //         SizedBox(height: 20),
-              //         ListTile(
-              //           leading:
-              //           Icon(Icons.favorite, color: AppColors.primaryColor),
-              //           title: Text('Favoritos',
-              //               style: TextStyle(
-              //                   fontSize: 20.0, color: AppColors.primaryColor)),
-              //           onTap: () {
-              //             // Navega a la pantalla de perfil
-              //           },
-              //         ),
-              //         SizedBox(height: 20),
-              //         ListTile(
-              //           leading:
-              //           Icon(Icons.settings, color: AppColors.primaryColor),
-              //           title: Text('Ajustes',
-              //               style: TextStyle(
-              //                   fontSize: 20.0, color: AppColors.primaryColor)),
-              //           onTap: () {
-              //             // Navega a la pantalla de ajustes
-              //           },
-              //         ),
-              //         SizedBox(height: 20),
-              //         ListTile(
-              //           leading:
-              //           Icon(Icons.logout, color: AppColors.primaryColor),
-              //           title: Text('Cerrar sesión',
-              //               style: TextStyle(
-              //                   fontSize: 20.0, color: AppColors.primaryColor)),
-              //           onTap: () async {
-              //             // Cierra la sesión del usuario
-              //             await FirebaseAuth.instance.signOut();
-              //             Navigator.pushNamed(context, '/login');
-              //           },
-              //         ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               drawer: CustomDrawerCustomer(currentPage: 'Inicio'),
               body: Center(
                 child: Container(
@@ -155,8 +57,11 @@ class ServiceScreen extends StatelessWidget {
                           gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              // colors: [AppColors.secondaryColor, AppColors.welcomeColor],
-                              colors: [Color(0xFFFF0F7B), Color(0xFFF89B29)]),
+                              colors: [
+                                AppColors.secondaryColor,
+                                AppColors.welcomeColor
+                              ]),
+                          // colors: [Color(0xFFFF0F7B), Color(0xFFF89B29)]),
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Card(
@@ -180,16 +85,15 @@ class ServiceScreen extends StatelessWidget {
                                 Image.network(
                                   businesses[index].url ??
                                       'https://via.placeholder.com/150',
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.25,
+                                  height: MediaQuery.of(context).size.height * 0.25,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
                                   errorBuilder: (BuildContext context,
                                       Object exception,
                                       StackTrace? stackTrace) {
                                     // Si ocurre un error al cargar la imagen, se devuelve una imagen de respaldo
-                                    return Image.network(
-                                      'https://via.placeholder.com/150',
+                                    return Image.asset(
+                                      'assets/images/logoblanco.jpg',
                                       height:
                                           MediaQuery.of(context).size.height *
                                               0.25,
@@ -211,17 +115,6 @@ class ServiceScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 10.0),
-                                // Align(
-                                //   alignment: Alignment.centerLeft,
-                                //   child: Text(
-                                //     'Sobre nosotros',
-                                //     style: TextStyle(
-                                //         fontSize: 25.0,
-                                //         color: AppColors.secondaryColor,
-                                //         fontWeight: FontWeight.bold),
-                                //   ),
-                                // ),
-                                // SizedBox(height: 15.0), // Espacio entre los elementos
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -231,31 +124,20 @@ class ServiceScreen extends StatelessWidget {
                                     style: TextStyle(fontSize: 14),
                                   ),
                                 ),
-                                // SizedBox(height: 15.0), // Espacio entre los elementos
-                                // Align(
-                                //   alignment: Alignment.centerLeft,
-                                //   child: Text(
-                                //     'Contacto',
-                                //     style: TextStyle(
-                                //         fontSize: 25.0,
-                                //         color: AppColors.secondaryColor,
-                                //         fontWeight: FontWeight.bold),
-                                //   ),
-                                // ),
                                 SizedBox(height: 20.0),
                                 Row(
                                   children: <Widget>[
-                                    Icon(Icons.work, size: 20),
+                                    Icon(Icons.work, size: 20, color: AppColors.primaryColor),
                                     // Icono de servicios
                                     SizedBox(width: 10.0),
                                     Text(businesses[index].service,
                                         style: TextStyle(fontSize: 16)),
                                   ],
                                 ),
-                                SizedBox(height: 20.0),
+                                SizedBox(height: 10.0),
                                 Row(
                                   children: <Widget>[
-                                    Icon(Icons.location_on, size: 20),
+                                    Icon(Icons.location_on, size: 20, color: AppColors.primaryColor),
                                     SizedBox(width: 10.0),
                                     Text(
                                         businesses[index].location ??
@@ -267,7 +149,7 @@ class ServiceScreen extends StatelessWidget {
                                 // Espacio entre los elementos
                                 Row(
                                   children: <Widget>[
-                                    Icon(Icons.phone, size: 20),
+                                    Icon(Icons.phone, size: 20, color: AppColors.primaryColor),
                                     SizedBox(width: 10.0),
                                     Text(
                                         businesses[index].phone ??
@@ -279,7 +161,7 @@ class ServiceScreen extends StatelessWidget {
 //                                Espacio entre los elementos
                                 Row(
                                   children: <Widget>[
-                                    Icon(Icons.email, size: 20),
+                                    Icon(Icons.email, size: 20, color: AppColors.primaryColor),
                                     SizedBox(width: 10.0),
                                     Text(businesses[index].email,
                                         style: TextStyle(fontSize: 16)),
@@ -289,7 +171,7 @@ class ServiceScreen extends StatelessWidget {
                                 // Espacio entre los elementos
                                 Row(
                                   children: <Widget>[
-                                    Icon(Icons.web, size: 20),
+                                    Icon(Icons.web, size: 20, color: AppColors.primaryColor),
                                     SizedBox(width: 10.0),
                                     // Espacio entre los elementos
                                     Text(
@@ -308,25 +190,33 @@ class ServiceScreen extends StatelessWidget {
                                       children: <Widget>[
                                         IconButton(
                                             icon: Icon(Icons.chat,
-                                            color: AppColors.primaryColor,
-                                            size: 40),
-                                        onPressed: () {
-                                          // Navegar a la pantalla de chat
-
-                                        }),
+                                                color: AppColors.primaryColor,
+                                                size: 40),
+                                            onPressed: () {
+                                              // Navegar a la pantalla de chat
+                                            },
+                                        ),
                                         IconButton(
                                           icon: Icon(Icons.favorite,
-                                              color: AppColors.primaryColor, size: 40),
+                                              color: AppColors.primaryColor,
+                                              size: 40),
                                           onPressed: () {
-                                            User? currentUser = FirebaseAuth.instance.currentUser;
+                                            User? currentUser = FirebaseAuth
+                                                .instance.currentUser;
                                             if (currentUser != null) {
                                               String userId = currentUser.uid;
-                                              String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa
-                                              favoritesBusinesses.addToFavorites(userId, businessId);
-                                              customToast.showSuccessToast("Empresa guardada en favoritos!");
+                                              String businessId = businesses[
+                                                      index]
+                                                  .id; // Asegúrate de tener el id de la empresa
+                                              favoritesBusinesses
+                                                  .addToFavorites(
+                                                      userId, businessId);
+                                              customToast.showSuccessToast(
+                                                  "Empresa guardada en favoritos!");
                                             } else {
                                               // Manejar el caso en que no hay un usuario autenticado
-                                              customToast.showErrorToast("Necesitas iniciar sesión para guardar favoritos!");
+                                              customToast.showErrorToast(
+                                                  "Necesitas iniciar sesión para guardar favoritos!");
                                             }
                                           },
                                         ),

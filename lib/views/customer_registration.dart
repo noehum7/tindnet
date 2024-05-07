@@ -78,7 +78,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                         Text(
                           'REGISTRO CLIENTES',
                           style: TextStyle(
-                              fontSize: 18.0, fontWeight: FontWeight.bold),
+                              fontSize: 18.0, fontWeight: FontWeight.bold, color: AppColors.primaryColor),
                         ),
                         SizedBox(height: 25.0),
                         TextFormField(
@@ -86,6 +86,12 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           validator: formValidator.isValidName,
                           decoration: InputDecoration(
                             labelText: 'Nombre',
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -94,6 +100,12 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           validator: formValidator.isValidEmail,
                           decoration: InputDecoration(
                             labelText: 'Email',
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -103,6 +115,12 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           decoration: InputDecoration(
                             labelText: 'Contraseña',
                             errorMaxLines: 2,
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                           obscureText: true,
                         ),
@@ -114,6 +132,12 @@ class CustomerRegistrationScreen extends StatelessWidget {
                           decoration: InputDecoration(
                             labelText: 'Teléfono',
                             errorMaxLines: 2,
+                            filled: true,
+                            fillColor: AppColors.welcomeColor,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide.none,
+                            ),
                           ),
                         ),
                         SizedBox(height: 20.0),
