@@ -1,43 +1,50 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
+import 'package:tindnet/auth/utils/favorites_businesses.dart';
 import 'package:tindnet/widgets/custom_toast.dart';
-import '../auth/utils/favorites_businesses.dart';
+import '../widgets/custom_drawer_customer.dart';
+import '../constants/app_colors.dart';
 
-class SearchResultsScreen extends StatefulWidget {
-  final String selectedCategory;
-  final String companyName;
-
-  // SearchResultsScreen({required this.selectedCategory, required this.companyName});
-  SearchResultsScreen({this.selectedCategory = '', this.companyName = ''});
-
+class FavoritesScreen extends StatefulWidget {
   @override
-  _SearchResultsScreenState createState() => _SearchResultsScreenState();
+  _FavoritesScreenState createState() => _FavoritesScreenState();
 }
 
-class _SearchResultsScreenState extends State<SearchResultsScreen> {
-  CustomToast customToast = CustomToast();
+class _FavoritesScreenState extends State<FavoritesScreen> {
+  late Future<List<DocumentSnapshot>> favoriteBusinesses;
   FavoritesBusinesses favoritesBusinesses = FavoritesBusinesses();
+  CustomToast customToast = CustomToast();
 
-  Future<List<DocumentSnapshot>> getBusinessesByCategory(
-      String category) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('businesses')
-        .where('service', isEqualTo: category)
-        .get();
-
-    return querySnapshot.docs;
+  @override
+  void initState() {
+    super.initState();
+    favoriteBusinesses =
+        getFavoriteBusinesses(FirebaseAuth.instance.currentUser!.uid);
   }
 
-  Future<List<DocumentSnapshot>> getBusinessesByName(String name) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('businesses')
-        .where('name', isEqualTo: name)
-        .get();
+  Future<List<DocumentSnapshot>> getFavoriteBusinesses(String userId) async {
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+    List<String> favoriteIds = List<String>.from(userData['favorites'] ?? []);
+    List<DocumentSnapshot> favoriteBusinesses = [];
 
-    return querySnapshot.docs;
+    for (String id in favoriteIds) {
+      DocumentSnapshot businessDoc = await FirebaseFirestore.instance
+          .collection('businesses')
+          .doc(id)
+          .get();
+      favoriteBusinesses.add(businessDoc);
+    }
+
+    return favoriteBusinesses;
+  }
+
+  void _updateFavoriteBusinesses() {
+    setState(() {
+      favoriteBusinesses = getFavoriteBusinesses(FirebaseAuth.instance.currentUser!.uid);
+    });
   }
 
   void _showCompanyCardDialog(BuildContext context, Map<String, dynamic> data, String businessId) {
@@ -139,14 +146,15 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.favorite,
+                              icon: Icon(Icons.heart_broken,
                                   color: AppColors.primaryColor, size: 40),
                               onPressed: () {
                                 User? currentUser = FirebaseAuth.instance.currentUser;
                                 if (currentUser != null) {
                                   String userId = currentUser.uid;
-                                  favoritesBusinesses.addToFavorites(userId, businessId);
-                                  customToast.showSuccessToast("Empresa guardada en favoritos!");
+                                  favoritesBusinesses.removeFromFavorites(userId, businessId);
+                                  customToast.showSuccessToast("Empresa eliminada de favoritos!");
+                                  _updateFavoriteBusinesses();
                                 } else {
                                   // Manejar el caso en que no hay un usuario autenticado
                                   customToast.showErrorToast("Necesitas iniciar sesión para guardar favoritos!");
@@ -180,12 +188,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Resultados de la búsqueda"),
+        title: Text("TindNet"),
+        toolbarHeight: MediaQuery.of(context).size.height * 0.07,
       ),
-      body: FutureBuilder(
-        future: widget.selectedCategory.isNotEmpty
-            ? getBusinessesByCategory(widget.selectedCategory)
-            : getBusinessesByName(widget.companyName),
+      drawer: CustomDrawerCustomer(currentPage: 'Favoritos'),
+      body: FutureBuilder<List<DocumentSnapshot>>(
+        future: favoriteBusinesses,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -198,12 +206,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(
-                      Icons.search_off,
+                      Icons.favorite_border,
                       color: Colors.grey,
                       size: 100,
                     ),
                     Text(
-                      'No se encontraron empresas con los criterios de búsqueda seleccionados',
+                      'No tienes ninguna empresa guardada en favoritos.',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 20, color: AppColors.primaryColor),
                     ),
@@ -211,12 +219,26 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                 ),
               );
             } else {
+              // return ListView.builder(
+              //   itemCount: snapshot.data!.length,
+              //   itemBuilder: (context, index) {
+              //     Map<String, dynamic> data =
+              //         snapshot.data![index].data() as Map<String, dynamic>;
+              //     return Card(
+              //       child: ListTile(
+              //         title: Text(data['name']),
+              //         subtitle: Text(data['location']),
+              //         // Add more fields as needed
+              //       ),
+              //     );
+              //   },
+              // );
               List<DocumentSnapshot> businesses = snapshot.data ?? [];
               return ListView.builder(
                 itemCount: businesses.length,
                 itemBuilder: (context, index) {
                   Map<String, dynamic>? data =
-                      businesses[index].data() as Map<String, dynamic>?;
+                  businesses[index].data() as Map<String, dynamic>?;
                   return GestureDetector(
                     onTap: () {
                       String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa

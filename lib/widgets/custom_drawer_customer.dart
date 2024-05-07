@@ -54,6 +54,16 @@ class CustomDrawerCustomer extends StatelessWidget {
             ),
             SizedBox(height: 15),
             ListTile(
+              leading: Icon(Icons.favorite, color: currentPage == 'Favoritos' ? AppColors.backgroundColor : AppColors.primaryColor),
+              title: Text('Favoritos',
+                  style: TextStyle(
+                      fontSize: 20.0, color: currentPage == 'Favoritos' ? AppColors.backgroundColor : AppColors.primaryColor)),
+              onTap: () {
+                Navigator.pushNamed(context, '/favorites');
+              },
+            ),
+            SizedBox(height: 15),
+            ListTile(
               leading: Icon(Icons.chat_bubble, color: currentPage == 'Chats' ? AppColors.backgroundColor : AppColors.primaryColor),
               title: Text('Chats',
                   style: TextStyle(
@@ -70,16 +80,6 @@ class CustomDrawerCustomer extends StatelessWidget {
                       fontSize: 20.0, color: currentPage == 'Mi Perfil' ? AppColors.backgroundColor : AppColors.primaryColor)),
               onTap: () {
                 // Navigator.pushNamed(context, '/profile_screen');
-              },
-            ),
-            SizedBox(height: 15),
-            ListTile(
-              leading: Icon(Icons.favorite, color: currentPage == 'Favoritos' ? AppColors.backgroundColor : AppColors.primaryColor),
-              title: Text('Favoritos',
-                  style: TextStyle(
-                      fontSize: 20.0, color: currentPage == 'Favoritos' ? AppColors.backgroundColor : AppColors.primaryColor)),
-              onTap: () {
-                // Navigator.pushNamed(context, '/favorites_screen');
               },
             ),
             SizedBox(height: 15),

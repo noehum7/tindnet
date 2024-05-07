@@ -6,11 +6,14 @@ import 'package:flutter/widgets.dart';
 import 'package:tindnet/constants/app_colors.dart';
 import 'package:tindnet/models/business.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-
+import 'package:tindnet/widgets/custom_toast.dart';
+import '../auth/utils/favorites_businesses.dart';
 import '../widgets/custom_drawer_customer.dart';
 
 class ServiceScreen extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  CustomToast customToast = CustomToast();
+  FavoritesBusinesses favoritesBusinesses = FavoritesBusinesses();
 
   Future<List<Business>> getBusinesses() async {
     QuerySnapshot querySnapshot =
@@ -303,12 +306,30 @@ class ServiceScreen extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: <Widget>[
-                                        Icon(Icons.chat,
+                                        IconButton(
+                                            icon: Icon(Icons.chat,
                                             color: AppColors.primaryColor,
                                             size: 40),
-                                        Icon(Icons.favorite,
-                                            color: AppColors.primaryColor,
-                                            size: 40),
+                                        onPressed: () {
+                                          // Navegar a la pantalla de chat
+
+                                        }),
+                                        IconButton(
+                                          icon: Icon(Icons.favorite,
+                                              color: AppColors.primaryColor, size: 40),
+                                          onPressed: () {
+                                            User? currentUser = FirebaseAuth.instance.currentUser;
+                                            if (currentUser != null) {
+                                              String userId = currentUser.uid;
+                                              String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa
+                                              favoritesBusinesses.addToFavorites(userId, businessId);
+                                              customToast.showSuccessToast("Empresa guardada en favoritos!");
+                                            } else {
+                                              // Manejar el caso en que no hay un usuario autenticado
+                                              customToast.showErrorToast("Necesitas iniciar sesión para guardar favoritos!");
+                                            }
+                                          },
+                                        ),
                                       ],
                                     ),
                                   ),

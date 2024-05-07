@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tindnet/views/search_results_screen.dart';
+import 'package:tindnet/widgets/custom_toast.dart';
 import '../constants/app_colors.dart';
 import '../models/service.dart';
 import '../widgets/custom_drawer_customer.dart';
@@ -12,6 +13,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   String selectedCategory = '';
   String companyName = '';
+  CustomToast customToast = CustomToast();
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +51,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 SizedBox(height: 20.0),
-                Text('Buscar por categorías', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text('Buscar por categorías',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 30.0),
                 GridView.count(
                   crossAxisCount: 3,
-                  shrinkWrap: true, // Añade esta línea para evitar errores de renderizado
+                  shrinkWrap: true,
+                  // Añade esta línea para evitar errores de renderizado
                   children: List.generate(services.length, (index) {
                     return GestureDetector(
                       onTap: () {
@@ -91,7 +96,9 @@ class _SearchScreenState extends State<SearchScreen> {
                   }),
                 ),
                 SizedBox(height: 25.0),
-                Text('Buscar por empresa', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text('Buscar por empresa',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 20.0),
                 Row(
                   children: <Widget>[
@@ -108,15 +115,20 @@ class _SearchScreenState extends State<SearchScreen> {
                     IconButton(
                       icon: Icon(Icons.search),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SearchResultsScreen(
-                              selectedCategory: '',
-                              companyName: companyName,
+                        if (!companyName.isNotEmpty) {
+                          customToast.showErrorToast(
+                              "El campo de búsqueda no puede estar vacío.");
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SearchResultsScreen(
+                                selectedCategory: '',
+                                companyName: companyName,
+                              ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       },
                     ),
                   ],
@@ -127,18 +139,22 @@ class _SearchScreenState extends State<SearchScreen> {
                     backgroundColor: AppColors.primaryColor,
                   ),
                   child: Text('Buscar',
-                      style: TextStyle(
-                          fontSize: 20, color: Colors.white)),
+                      style: TextStyle(fontSize: 20, color: Colors.white)),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchResultsScreen(
-                          selectedCategory: '',
-                          companyName: companyName,
+                    if (!companyName.isNotEmpty) {
+                      customToast.showErrorToast(
+                          "El campo de búsqueda no puede estar vacío.");
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchResultsScreen(
+                            selectedCategory: '',
+                            companyName: companyName,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   },
                 ),
               ],
