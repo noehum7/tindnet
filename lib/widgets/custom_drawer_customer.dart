@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tindnet/constants/app_colors.dart';
+import 'package:tindnet/widgets/custom_toast.dart';
 
 import '../views/login.dart';
 
 class CustomDrawerCustomer extends StatelessWidget {
   final String currentPage;
+  CustomToast customToast = CustomToast();
 
   Future<void> forgetUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -106,6 +108,7 @@ class CustomDrawerCustomer extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
+                customToast.showSuccessToast("Has cerrado sesión!");
               },
             ),
           ],

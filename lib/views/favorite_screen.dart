@@ -43,11 +43,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   void _updateFavoriteBusinesses() {
     setState(() {
-      favoriteBusinesses = getFavoriteBusinesses(FirebaseAuth.instance.currentUser!.uid);
+      favoriteBusinesses =
+          getFavoriteBusinesses(FirebaseAuth.instance.currentUser!.uid);
     });
   }
 
-  void _showCompanyCardDialog(BuildContext context, Map<String, dynamic> data, String businessId) {
+  void _showCompanyCardDialog(
+      BuildContext context, Map<String, dynamic> data, String businessId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -74,7 +76,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         ListTile(
                           leading: Icon(Icons.business, size: 50),
                           title: Text(data?['name'] ?? 'Nombre no disponible',
-                              style: TextStyle(fontSize: 20)),
+                              style: TextStyle(fontSize: 17)),
                         ),
                         SizedBox(height: 10.0),
                         Row(
@@ -103,8 +105,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           children: <Widget>[
                             Icon(Icons.location_on, size: 20),
                             SizedBox(width: 10.0),
-                            Text(data?['location'] ?? 'Ubicación no disponible',
-                                style: TextStyle(fontSize: 16)),
+                            Expanded(
+                              child: Text(
+                                  data?['location'] ??
+                                      'Ubicación no disponible',
+                                  style: TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
                         SizedBox(height: 10.0),
@@ -121,8 +127,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           children: <Widget>[
                             Icon(Icons.email, size: 20),
                             SizedBox(width: 10.0),
-                            Text(data?['email'] ?? 'Email no disponible',
-                                style: TextStyle(fontSize: 16)),
+                            Expanded(
+                              child: Text(
+                                  data?['email'] ??
+                                      'Email no disponible',
+                                  style: TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
                         SizedBox(height: 10.0),
@@ -130,11 +140,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                           children: <Widget>[
                             Icon(Icons.web, size: 20),
                             SizedBox(width: 10.0),
-                            Text(data?['web'] ?? 'Web no disponible',
-                                style: TextStyle(fontSize: 16)),
+                            Expanded(
+                              child: Text(
+                                  data?['web'] ??
+                                      'Web no disponible',
+                                  style: TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 30.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -149,15 +163,19 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               icon: Icon(Icons.heart_broken,
                                   color: AppColors.primaryColor, size: 40),
                               onPressed: () {
-                                User? currentUser = FirebaseAuth.instance.currentUser;
+                                User? currentUser =
+                                    FirebaseAuth.instance.currentUser;
                                 if (currentUser != null) {
                                   String userId = currentUser.uid;
-                                  favoritesBusinesses.removeFromFavorites(userId, businessId);
-                                  customToast.showSuccessToast("Empresa eliminada de favoritos!");
+                                  favoritesBusinesses.removeFromFavorites(
+                                      userId, businessId);
+                                  customToast.showSuccessToast(
+                                      "Empresa eliminada de favoritos!");
                                   _updateFavoriteBusinesses();
                                 } else {
                                   // Manejar el caso en que no hay un usuario autenticado
-                                  customToast.showErrorToast("Necesitas iniciar sesión para guardar favoritos!");
+                                  customToast.showErrorToast(
+                                      "Necesitas iniciar sesión para guardar favoritos!");
                                 }
                               },
                             ),
@@ -213,7 +231,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     Text(
                       'No tienes ninguna empresa guardada en favoritos.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20, color: AppColors.primaryColor),
+                      style: TextStyle(
+                          fontSize: 20, color: AppColors.primaryColor),
                     ),
                   ],
                 ),
@@ -238,10 +257,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 itemCount: businesses.length,
                 itemBuilder: (context, index) {
                   Map<String, dynamic>? data =
-                  businesses[index].data() as Map<String, dynamic>?;
+                      businesses[index].data() as Map<String, dynamic>?;
                   return GestureDetector(
                     onTap: () {
-                      String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa
+                      String businessId = businesses[index]
+                          .id; // Asegúrate de tener el id de la empresa
                       _showCompanyCardDialog(context, data!, businessId);
                     },
                     child: Card(

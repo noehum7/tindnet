@@ -120,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.person),
                         ),
                       ),
                       SizedBox(height: 10.0),
@@ -133,6 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           filled: true,
                           fillColor: Colors.white,
+                          prefixIcon: Icon(Icons.password),
                           suffixIcon: IconButton(
                             icon: Icon(
                               _isPasswordHidden

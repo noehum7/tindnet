@@ -60,7 +60,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                         Text(
                           '¿Eres una empresa? Pulsa aquí',
                           style: TextStyle(
-                              fontSize: 10, color: AppColors.primaryColor),
+                              fontSize: 12, color: AppColors.primaryColor),
                         ),
                       ],
                     ),
@@ -92,6 +92,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.business),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -106,6 +107,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.email_outlined),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -121,6 +123,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.password),
                           ),
                           obscureText: true,
                         ),
@@ -138,6 +141,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.phone_android),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -195,7 +199,7 @@ class CustomerRegistrationScreen extends StatelessWidget {
                     child: Text(
                       '¿Ya tienes una cuenta? Inicia sesión',
                       style: TextStyle(
-                          fontSize: 10, color: AppColors.primaryColor),
+                          fontSize: 12, color: AppColors.primaryColor),
                     ),
                   ),
                 ],

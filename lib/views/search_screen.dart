@@ -26,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Center(
         child: Container(
           padding: EdgeInsets.all(10.0),
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery.of(context).size.width * 0.9,
           child: SingleChildScrollView(
             // Añade esto
             child: Column(
@@ -88,8 +88,11 @@ class _SearchScreenState extends State<SearchScreen> {
                             child: Icon(services[index].icon),
                           ),
                           SizedBox(height: 10.0),
-                          // Añade espacio entre el icono y el nombre
-                          Text(services[index].name),
+                          // Text(services[index].name),
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(services[index].name),
+                          ),
                         ],
                       ),
                     );
@@ -100,39 +103,6 @@ class _SearchScreenState extends State<SearchScreen> {
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 SizedBox(height: 20.0),
-                // Row(
-                //   children: <Widget>[
-                //     Expanded(
-                //       child: TextFormField(
-                //         onChanged: (value) {
-                //           setState(() {
-                //             companyName = value;
-                //           });
-                //         },
-                //       ),
-                //     ),
-                //     SizedBox(height: 20.0),
-                //     IconButton(
-                //       icon: Icon(Icons.search),
-                //       onPressed: () {
-                //         if (!companyName.isNotEmpty) {
-                //           customToast.showErrorToast(
-                //               "El campo de búsqueda no puede estar vacío.");
-                //         } else {
-                //           Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //               builder: (context) => SearchResultsScreen(
-                //                 selectedCategory: '',
-                //                 companyName: companyName,
-                //               ),
-                //             ),
-                //           );
-                //         }
-                //       },
-                //     ),
-                //   ],
-                // ),
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.welcomeColor,

@@ -78,6 +78,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.business),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -86,12 +87,14 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                           validator: formValidator.isValidCif,
                           decoration: InputDecoration(
                             labelText: 'CIF',
+                            errorMaxLines: 2,
                             filled: true,
                             fillColor: AppColors.welcomeColor,
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.numbers),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -106,6 +109,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.email_outlined),
                           ),
                         ),
                         SizedBox(height: 20.0),
@@ -119,6 +123,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.home_repair_service),
                           ),
                           items: <String>[
                             'Productos',
@@ -152,6 +157,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                               borderRadius: BorderRadius.circular(10.0),
                               borderSide: BorderSide.none,
                             ),
+                            prefixIcon: Icon(Icons.password),
                           ),
                           obscureText: true,
                         ),
@@ -208,7 +214,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                     child: Text(
                       '¿Ya tienes una cuenta? Inicia sesión',
                       style: TextStyle(
-                          fontSize: 10, color: AppColors.primaryColor),
+                          fontSize: 12, color: AppColors.primaryColor),
                     ),
                   ),
                 ],

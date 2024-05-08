@@ -27,7 +27,13 @@ class ServiceScreen extends StatelessWidget {
       future: getBusinesses(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          // return CircularProgressIndicator();
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primaryColor,
+              strokeWidth: 5.0, //Grosor de la línea
+            ),
+          );
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else {
@@ -67,164 +73,169 @@ class ServiceScreen extends StatelessWidget {
                         child: Card(
                           color: Colors.transparent,
                           elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              children: <Widget>[
-                                // Image.asset(
-                                //   businesses[index].url ?? "https://via.placeholder.com/150",
-                                //   height:
-                                //   MediaQuery
-                                //       .of(context)
-                                //       .size
-                                //       .height * 0.25,
-                                //   width: double.infinity,
-                                //   //Para coger todo el ancho posible
-                                //   fit: BoxFit.cover,
-                                // ),
-                                Image.network(
-                                  businesses[index].url ??
-                                      'https://via.placeholder.com/150',
-                                  height: MediaQuery.of(context).size.height * 0.25,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (BuildContext context,
-                                      Object exception,
-                                      StackTrace? stackTrace) {
-                                    // Si ocurre un error al cargar la imagen, se devuelve una imagen de respaldo
-                                    return Image.asset(
-                                      'assets/images/logoblanco.jpg',
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.25,
-                                      width: double.infinity,
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
-                                ),
-                                //En este caso como van a ser url de imágenes usamos network, sino sería asset
-                                SizedBox(height: 10.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    businesses[index].name,
-                                    style: TextStyle(
-                                        fontSize: 25.0,
-                                        color: AppColors.primaryColor,
-                                        fontWeight: FontWeight.bold),
+                          child: SingleChildScrollView(
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                children: <Widget>[
+                                  // Image.asset( Si quisiera poner una imagen local del proyecto
+                                  //   businesses[index].url ?? "https://via.placeholder.com/150",
+                                  Image.network(
+                                    businesses[index].url ??
+                                        'https://via.placeholder.com/150',
+                                    height: MediaQuery.of(context).size.height *
+                                        0.25,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (BuildContext context,
+                                        Object exception,
+                                        StackTrace? stackTrace) {
+                                      // Si ocurre un error al cargar la imagen, se devuelve una imagen de respaldo
+                                      return Image.asset(
+                                        'assets/images/logoblanco.jpg',
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.25,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
                                   ),
-                                ),
-                                SizedBox(height: 10.0),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    businesses[index].aboutUs ??
-                                        'Información de la empresa no disponible',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                ),
-                                SizedBox(height: 20.0),
-                                Row(
-                                  children: <Widget>[
-                                    Icon(Icons.work, size: 20, color: AppColors.primaryColor),
-                                    // Icono de servicios
-                                    SizedBox(width: 10.0),
-                                    Text(businesses[index].service,
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 10.0),
-                                Row(
-                                  children: <Widget>[
-                                    Icon(Icons.location_on, size: 20, color: AppColors.primaryColor),
-                                    SizedBox(width: 10.0),
-                                    Text(
-                                        businesses[index].location ??
-                                            'Ubicación no disponible',
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 10.0),
-                                // Espacio entre los elementos
-                                Row(
-                                  children: <Widget>[
-                                    Icon(Icons.phone, size: 20, color: AppColors.primaryColor),
-                                    SizedBox(width: 10.0),
-                                    Text(
-                                        businesses[index].phone ??
-                                            'Teléfono no disponible',
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 10.0),
-//                                Espacio entre los elementos
-                                Row(
-                                  children: <Widget>[
-                                    Icon(Icons.email, size: 20, color: AppColors.primaryColor),
-                                    SizedBox(width: 10.0),
-                                    Text(businesses[index].email,
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 10.0),
-                                // Espacio entre los elementos
-                                Row(
-                                  children: <Widget>[
-                                    Icon(Icons.web, size: 20, color: AppColors.primaryColor),
-                                    SizedBox(width: 10.0),
-                                    // Espacio entre los elementos
-                                    Text(
-                                        businesses[index].web ??
-                                            'Web no disponible',
-                                        style: TextStyle(fontSize: 16)),
-                                  ],
-                                ),
-                                SizedBox(height: 12.0),
-                                // Espacio entre los elementos
-                                Expanded(
-                                  child: Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: <Widget>[
-                                        IconButton(
-                                            icon: Icon(Icons.chat,
-                                                color: AppColors.primaryColor,
-                                                size: 40),
-                                            onPressed: () {
-                                              // Navegar a la pantalla de chat
-                                            },
-                                        ),
-                                        IconButton(
-                                          icon: Icon(Icons.favorite,
-                                              color: AppColors.primaryColor,
-                                              size: 40),
-                                          onPressed: () {
-                                            User? currentUser = FirebaseAuth
-                                                .instance.currentUser;
-                                            if (currentUser != null) {
-                                              String userId = currentUser.uid;
-                                              String businessId = businesses[
-                                                      index]
-                                                  .id; // Asegúrate de tener el id de la empresa
-                                              favoritesBusinesses
-                                                  .addToFavorites(
-                                                      userId, businessId);
-                                              customToast.showSuccessToast(
-                                                  "Empresa guardada en favoritos!");
-                                            } else {
-                                              // Manejar el caso en que no hay un usuario autenticado
-                                              customToast.showErrorToast(
-                                                  "Necesitas iniciar sesión para guardar favoritos!");
-                                            }
-                                          },
-                                        ),
-                                      ],
+                                  //En este caso como van a ser url de imágenes usamos network, sino sería asset
+                                  SizedBox(height: 10.0),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      businesses[index].name,
+                                      style: TextStyle(
+                                          fontSize: 25.0,
+                                          color: AppColors.primaryColor,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(height: 10.0),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      businesses[index].aboutUs ??
+                                          'Información de la empresa no disponible.',
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(fontSize: 14, color: AppColors.primaryColor),
+                                    ),
+                                  ),
+                                  SizedBox(height: 20.0),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(Icons.work,
+                                          size: 20,
+                                          color: AppColors.primaryColor),
+                                      // Icono de servicios
+                                      SizedBox(width: 10.0),
+                                      Text(businesses[index].service,
+                                          style: TextStyle(fontSize: 16,
+                                              color: AppColors.primaryColor)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.0),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(Icons.location_on,
+                                          size: 20,
+                                          color: AppColors.primaryColor),
+                                      SizedBox(width: 10.0),
+                                      Text(
+                                          businesses[index].location ??
+                                              'Ubicación no disponible',
+                                          style: TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.0),
+                                  //
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(Icons.phone,
+                                          size: 20,
+                                          color: AppColors.primaryColor),
+                                      SizedBox(width: 10.0),
+                                      Text(
+                                          businesses[index].phone ??
+                                              'Teléfono no disponible',
+                                          style: TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.0),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(Icons.email,
+                                          size: 20,
+                                          color: AppColors.primaryColor),
+                                      SizedBox(width: 10.0),
+                                      Flexible(
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            businesses[index].email,
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      ),
+                                      // Text(businesses[index].email,
+                                      //     style: TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 10.0),
+                                  Row(
+                                    children: <Widget>[
+                                      Icon(Icons.web,
+                                          size: 20,
+                                          color: AppColors.primaryColor),
+                                      SizedBox(width: 10.0),
+                                      Text(
+                                          businesses[index].web ??
+                                              'Web no disponible',
+                                          style: TextStyle(fontSize: 16)),
+                                    ],
+                                  ),
+                                  SizedBox(height: 20.0),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      IconButton(
+                                        icon: Icon(Icons.chat,
+                                            color: AppColors.primaryColor,
+                                            size: 40),
+                                        onPressed: () {
+                                          // Navegar a la pantalla de chat
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.favorite,
+                                            color: AppColors.primaryColor,
+                                            size: 40),
+                                        onPressed: () {
+                                          User? currentUser =
+                                              FirebaseAuth.instance.currentUser;
+                                          if (currentUser != null) {
+                                            String userId = currentUser.uid;
+                                            String businessId = businesses[
+                                                    index]
+                                                .id; // Asegúrate de tener el id de la empresa
+                                            favoritesBusinesses.addToFavorites(
+                                                userId, businessId);
+                                            customToast.showSuccessToast(
+                                                "Empresa guardada en favoritos!");
+                                          } else {
+                                            // Manejar el caso en que no hay un usuario autenticado
+                                            customToast.showErrorToast(
+                                                "Necesitas iniciar sesión para guardar favoritos!");
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

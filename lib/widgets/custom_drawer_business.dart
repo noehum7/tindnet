@@ -4,9 +4,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tindnet/constants/app_colors.dart';
 
 import '../views/login.dart';
+import 'custom_toast.dart';
 
 class CustomDrawerBusiness extends StatelessWidget {
   final String currentPage;
+  CustomToast customToast = CustomToast();
 
   Future<void> forgetUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -86,6 +88,7 @@ class CustomDrawerBusiness extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                 );
+                customToast.showSuccessToast("Has cerrado sesión!");
               },
             ),
           ],

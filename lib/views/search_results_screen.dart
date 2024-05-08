@@ -67,7 +67,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                         ListTile(
                           leading: Icon(Icons.business, size: 50),
                           title: Text(data?['name'] ?? 'Nombre no disponible',
-                              style: TextStyle(fontSize: 20)),
+                              style: TextStyle(fontSize: 17)),
                         ),
                         SizedBox(height: 10.0),
                         Row(
@@ -96,8 +96,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                           children: <Widget>[
                             Icon(Icons.location_on, size: 20),
                             SizedBox(width: 10.0),
-                            Text(data?['location'] ?? 'Ubicación no disponible',
-                                style: TextStyle(fontSize: 16)),
+                            Expanded(
+                              child: Text(
+                                  data?['location'] ??
+                                      'Ubicación no disponible',
+                                  style: TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
                         SizedBox(height: 10.0),
@@ -114,8 +118,12 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                           children: <Widget>[
                             Icon(Icons.email, size: 20),
                             SizedBox(width: 10.0),
-                            Text(data?['email'] ?? 'Email no disponible',
-                                style: TextStyle(fontSize: 16)),
+                            Expanded(
+                              child: Text(
+                                  data?['email'] ??
+                                      'Email no disponible',
+                                  style: TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
                         SizedBox(height: 10.0),
@@ -123,11 +131,15 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                           children: <Widget>[
                             Icon(Icons.web, size: 20),
                             SizedBox(width: 10.0),
-                            Text(data?['web'] ?? 'Web no disponible',
-                                style: TextStyle(fontSize: 16)),
+                            Expanded(
+                              child: Text(
+                                  data?['web'] ??
+                                      'Web no disponible',
+                                  style: TextStyle(fontSize: 16)),
+                            ),
                           ],
                         ),
-                        SizedBox(height: 20.0),
+                        SizedBox(height: 30.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -179,8 +191,17 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   title: Text("Resultados de la búsqueda"),
+      // ),
       appBar: AppBar(
-        title: Text("Resultados de la búsqueda"),
+        title: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            "Resultados de la búsqueda",
+            textAlign: TextAlign.center,
+          ),
+        ),
       ),
       body: FutureBuilder(
         future: widget.selectedCategory.isNotEmpty
