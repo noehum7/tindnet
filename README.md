@@ -1,6 +1,6 @@
 # tindnet
 
-Desliza a través de una variedad de servicios locales, guarda tus favoritos, y comunícate fácilmente con los proveedores de servicios a través de un chat integrado.
+Desliza entre diferentes empresas locales, guarda tus favoritas, y comunícate fácilmente con ellas a través de un chat integrado.
 
 ## Getting Started
 
