@@ -52,7 +52,23 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                     width: MediaQuery.of(context).size.width * 0.8,
                     color: AppColors.secondaryColor,
                   ),
-                  SizedBox(height: 40.0),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/customer_registration');
+                    },
+                    child:
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '¿Eres un cliente? Pulsa aquí',
+                          style: TextStyle(
+                              fontSize: 12, color: AppColors.primaryColor),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 30.0),
                   Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     padding: EdgeInsets.all(16.0),
@@ -71,7 +87,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
                           controller: _nameController,
                           validator: formValidator.isValidName,
                           decoration: InputDecoration(
-                            labelText: 'Nombre o razón social',
+                            labelText: 'Nombre',
                             filled: true,
                             fillColor: AppColors.welcomeColor,
                             border: OutlineInputBorder(

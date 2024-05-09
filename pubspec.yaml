@@ -1,5 +1,5 @@
 name: tindnet
-description: "Desliza a través de una variedad de servicios locales, guarda tus favoritos, y comunícate fácilmente con los proveedores de servicios a través de un chat integrado."
+description: "Desliza a través de una variedad de empresas locales, guarda tus favoritas, haz una búsqueda según tus necesidades y comunícate fácilmente con ellas a través de nuestro chat integrado."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -34,6 +34,7 @@ dependencies:
   flutter_card_swiper: 7.0.0
   fluttertoast: ^8.2.5
   google_fonts: ^6.2.1
+  flutter_launcher_icons: ^0.13.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -73,6 +74,11 @@ flutter:
 
   assets:
     - assets/images/
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/icono.png"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

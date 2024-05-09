@@ -63,11 +63,19 @@ class ServiceScreen extends StatelessWidget {
                           gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: [
-                                AppColors.secondaryColor,
-                                AppColors.welcomeColor
-                              ]),
-                          // colors: [Color(0xFFFF0F7B), Color(0xFFF89B29)]),
+                              // colors: [
+                              //   AppColors.welcomeColor,
+                              //   AppColors.secondaryColor,
+                              // ]),
+                              colors: [Color(0xFFf3722c), Color(0xFFf9c74f)]),
+                          boxShadow: [ // Sombra para dar profundidad
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3), // Cambia la posición de la sombra
+                            ),
+                          ],
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Card(
@@ -79,7 +87,6 @@ class ServiceScreen extends StatelessWidget {
                               child: Column(
                                 children: <Widget>[
                                   // Image.asset( Si quisiera poner una imagen local del proyecto
-                                  //   businesses[index].url ?? "https://via.placeholder.com/150",
                                   Image.network(
                                     businesses[index].url ??
                                         'https://via.placeholder.com/150',
@@ -90,7 +97,7 @@ class ServiceScreen extends StatelessWidget {
                                     errorBuilder: (BuildContext context,
                                         Object exception,
                                         StackTrace? stackTrace) {
-                                      // Si ocurre un error al cargar la imagen, se devuelve una imagen de respaldo
+                                      // Si ocurre un error al cargar la imagen, se muestra una imagen de respaldo
                                       return Image.asset(
                                         'assets/images/logoblanco.jpg',
                                         height:
@@ -101,7 +108,6 @@ class ServiceScreen extends StatelessWidget {
                                       );
                                     },
                                   ),
-                                  //En este caso como van a ser url de imágenes usamos network, sino sería asset
                                   SizedBox(height: 10.0),
                                   Align(
                                     alignment: Alignment.centerLeft,
@@ -143,10 +149,15 @@ class ServiceScreen extends StatelessWidget {
                                           size: 20,
                                           color: AppColors.primaryColor),
                                       SizedBox(width: 10.0),
-                                      Text(
-                                          businesses[index].location ??
-                                              'Ubicación no disponible',
-                                          style: TextStyle(fontSize: 16)),
+                                      Flexible(
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            businesses[index].location ?? 'Dirección no disponible',
+                                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   SizedBox(height: 10.0),
@@ -160,7 +171,7 @@ class ServiceScreen extends StatelessWidget {
                                       Text(
                                           businesses[index].phone ??
                                               'Teléfono no disponible',
-                                          style: TextStyle(fontSize: 16)),
+                                          style: TextStyle(fontSize: 16, color: AppColors.primaryColor)),
                                     ],
                                   ),
                                   SizedBox(height: 10.0),
@@ -175,7 +186,7 @@ class ServiceScreen extends StatelessWidget {
                                           fit: BoxFit.scaleDown,
                                           child: Text(
                                             businesses[index].email,
-                                            style: TextStyle(fontSize: 16),
+                                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
                                           ),
                                         ),
                                       ),
@@ -190,10 +201,15 @@ class ServiceScreen extends StatelessWidget {
                                           size: 20,
                                           color: AppColors.primaryColor),
                                       SizedBox(width: 10.0),
-                                      Text(
-                                          businesses[index].web ??
-                                              'Web no disponible',
-                                          style: TextStyle(fontSize: 16)),
+                                      Flexible(
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text(
+                                            businesses[index].web ?? 'Web no disponible',
+                                            style: TextStyle(fontSize: 16, color: AppColors.primaryColor),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   SizedBox(height: 20.0),
@@ -202,17 +218,35 @@ class ServiceScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
                                       IconButton(
-                                        icon: Icon(Icons.chat,
+                                        icon: Container(
+                                          padding: EdgeInsets.all(8.0), // Añade un relleno alrededor del icono
+                                          decoration: BoxDecoration(
+                                            color: Colors.white, // Añade un color de fondo
+                                            shape: BoxShape.circle, // Hace que el fondo sea circular
+                                          ),
+                                          child: Icon(
+                                            Icons.chat,
                                             color: AppColors.primaryColor,
-                                            size: 40),
+                                            size: 40,
+                                          ),
+                                        ),
                                         onPressed: () {
                                           // Navegar a la pantalla de chat
                                         },
                                       ),
                                       IconButton(
-                                        icon: Icon(Icons.favorite,
+                                        icon: Container(
+                                          padding: EdgeInsets.all(8.0), // Añade un relleno alrededor del icono
+                                          decoration: BoxDecoration(
+                                            color: Colors.white, // Añade un color de fondo
+                                            shape: BoxShape.circle, // Hace que el fondo sea circular
+                                          ),
+                                          child: Icon(
+                                            Icons.favorite,
                                             color: AppColors.primaryColor,
-                                            size: 40),
+                                            size: 40,
+                                          ),
+                                        ),
                                         onPressed: () {
                                           User? currentUser =
                                               FirebaseAuth.instance.currentUser;
