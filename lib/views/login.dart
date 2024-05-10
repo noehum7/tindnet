@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tindnet/views/customer_screen.dart';
 import '../constants/app_colors.dart';
-import 'package:tindnet/auth/utils/validators_utils.dart';
+import '../utils/validators_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/custom_toast.dart';
 import 'business_screen.dart';

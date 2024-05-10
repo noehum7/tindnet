@@ -51,7 +51,7 @@ class CustomDrawerBusiness extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 20.0, color: currentPage == 'Chats' ? AppColors.backgroundColor : AppColors.primaryColor)),
               onTap: () {
-                // Navigator.pushNamed(context, '/chat_screen');
+                Navigator.pushNamed(context, '/chat_list');
               },
             ),
             SizedBox(height: 20),

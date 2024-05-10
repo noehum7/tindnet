@@ -7,11 +7,14 @@ import 'package:tindnet/constants/app_colors.dart';
 import 'package:tindnet/models/business.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:tindnet/widgets/custom_toast.dart';
-import '../auth/utils/favorites_businesses.dart';
+import '../services/favorites_businesses.dart';
 import '../widgets/custom_drawer_customer.dart';
+import 'chat_screen.dart';
+import '../services/chat_service.dart';
 
 class ServiceScreen extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final ChatService _chatService = ChatService();
   CustomToast customToast = CustomToast();
   FavoritesBusinesses favoritesBusinesses = FavoritesBusinesses();
 
@@ -231,7 +234,23 @@ class ServiceScreen extends StatelessWidget {
                                           ),
                                         ),
                                         onPressed: () {
-                                          // Navegar a la pantalla de chat
+                                          User? currentUser = FirebaseAuth.instance.currentUser;
+                                          if (currentUser != null) {
+                                            String userId = currentUser.uid;
+                                            String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa
+                                            String chatId = '$userId-$businessId'; // Genera un chatId único
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatScreen(chatId: chatId,
+                                                  userId: userId,
+                                                  businessId: businessId,
+                                                  businessName: businesses[index].name,),
+                                              ),
+                                            );
+                                          } else {
+                                            customToast.showErrorToast("Ha ocurrido un error,");
+                                          }
                                         },
                                       ),
                                       IconButton(

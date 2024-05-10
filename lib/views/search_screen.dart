@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tindnet/views/search_results_screen.dart';
 import 'package:tindnet/widgets/custom_toast.dart';
 import '../constants/app_colors.dart';
-import '../models/service.dart';
+import '../models/category.dart';
 import '../widgets/custom_drawer_customer.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -59,11 +59,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   crossAxisCount: 3,
                   shrinkWrap: true,
                   // Añade esta línea para evitar errores de renderizado
-                  children: List.generate(services.length, (index) {
+                  children: List.generate(categories.length, (index) {
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          selectedCategory = services[index].name;
+                          selectedCategory = categories[index].name;
                         });
                         Navigator.push(
                           context,
@@ -85,13 +85,13 @@ class _SearchScreenState extends State<SearchScreen> {
                               borderRadius: BorderRadius.circular(
                                   10.0), // Bordes redondeados
                             ),
-                            child: Icon(services[index].icon),
+                            child: Icon(categories[index].icon),
                           ),
                           SizedBox(height: 10.0),
                           // Text(services[index].name),
                           FittedBox(
                             fit: BoxFit.scaleDown,
-                            child: Text(services[index].name),
+                            child: Text(categories[index].name),
                           ),
                         ],
                       ),
@@ -151,7 +151,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         MaterialPageRoute(
                           builder: (context) => SearchResultsScreen(
                             selectedCategory: '',
-                            companyName: companyName,
+                            companyName: companyName.trim(),
                           ),
                         ),
                       );

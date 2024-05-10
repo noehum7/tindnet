@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tindnet/auth/utils/validators_utils.dart';
+import '../utils/validators_utils.dart';
 import 'package:tindnet/widgets/custom_drawer_business.dart';
 import 'package:tindnet/widgets/custom_toast.dart';
 import '../constants/app_colors.dart';

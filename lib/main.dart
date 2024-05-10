@@ -2,6 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tindnet/views/business_screen.dart';
+import 'package:tindnet/views/chat_list_screen.dart';
+import 'package:tindnet/views/chat_screen.dart';
 import 'package:tindnet/views/customer_screen.dart';
 import 'package:tindnet/views/favorite_screen.dart';
 import 'package:tindnet/views/search_results_screen.dart';
@@ -64,6 +66,8 @@ class MyApp extends StatelessWidget {
         '/search': (context) => SearchScreen(), //Pantalla de búsqueda de servicios
         '/search_results': (context) => SearchResultsScreen(), //Pantalla de resultados de búsqueda
         '/favorites': (context) => FavoritesScreen(), //Pantalla de favoritos
+        '/chat_list': (context) => ChatListScreen(), //Pantalla de lista de chats
+        '/chat': (context) => ChatScreen(chatId: 'chatId', userId: 'userId', businessId: 'businessId', businessName: 'businessName',), //Pantalla de chat
       },
       home:
           WelcomeScreen(), // Se ha establecido WelcomeScreen como página de inicio de la app

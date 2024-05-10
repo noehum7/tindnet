@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tindnet/auth/utils/favorites_businesses.dart';
 import 'package:tindnet/widgets/custom_toast.dart';
+import '../services/favorites_businesses.dart';
 import '../widgets/custom_drawer_customer.dart';
 import '../constants/app_colors.dart';
 

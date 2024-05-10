@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import 'package:tindnet/widgets/custom_toast.dart';
-import '../auth/utils/favorites_businesses.dart';
+import '../services/favorites_businesses.dart';
+import '../widgets/custom_toast.dart';
 
 class SearchResultsScreen extends StatefulWidget {
   final String selectedCategory;

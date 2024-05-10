@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tindnet/constants/app_colors.dart';
-import 'package:tindnet/auth/utils/validators_utils.dart';
+import '../utils/validators_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/custom_toast.dart';
 

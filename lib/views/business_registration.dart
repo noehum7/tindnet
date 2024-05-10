@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
-import '../auth/utils/validators_utils.dart';
+import '../utils/validators_utils.dart';
 import '../widgets/custom_toast.dart';
 
 class BusinessRegistrationScreen extends StatefulWidget {
