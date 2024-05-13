@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tindnet/constants/app_colors.dart';
@@ -8,12 +9,16 @@ class ChatScreen extends StatefulWidget {
   final String userId;
   final String businessId;
   final String businessName;
+  final String userName;
+  final bool isCustomer;
 
   ChatScreen({
     required this.chatId,
     required this.userId,
     required this.businessId,
     required this.businessName,
+    required this.userName,
+    required this.isCustomer,
   });
 
   @override
@@ -27,15 +32,14 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(widget.businessName),
-      // ),
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.chevron_left_rounded, color: AppColors.primaryColor, size: 40), // Cambia esto al ícono que prefieras
+          icon: Icon(Icons.chevron_left_rounded,
+              color: AppColors.primaryColor,
+              size: 40), // Cambia esto al ícono que prefieras
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(widget.businessName),
+        title: Text(widget.isCustomer ? widget.businessName : widget.userName),
       ),
       body: Column(
         children: <Widget>[
@@ -49,7 +53,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Container();
                 }
-                List<DocumentSnapshot> messages = snapshot.data!.docs.reversed.toList(); // Invierte el orden de los mensajes
+                List<DocumentSnapshot> messages = snapshot.data!.docs.reversed
+                    .toList(); // Invierte el orden de los mensajes
                 return ListView.builder(
                   // itemCount: snapshot.data!.docs.length,
                   // itemBuilder: (context, index) {
@@ -60,7 +65,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     DocumentSnapshot message = messages[index];
                     bool isUserMessage = message['sentBy'] == widget.userId;
                     return Container(
-                      alignment: isUserMessage ? Alignment.centerRight : Alignment.centerLeft,
+                      alignment: isUserMessage
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
                       child: Container(
                         margin: EdgeInsets.all(10),
                         padding: EdgeInsets.all(10),
@@ -87,12 +94,13 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           ElevatedButton(
             child: Text('Enviar'),
-            onPressed: () async{
+            onPressed: () async {
               if (_messageController.text.isNotEmpty) {
                 await _chatService.startChat(
                   widget.userId,
                   widget.businessId,
                   widget.businessName,
+                  widget.userName
                 );
                 _chatService.sendMessage(
                   widget.chatId,
@@ -100,9 +108,14 @@ class _ChatScreenState extends State<ChatScreen> {
                   _messageController.text,
                 );
                 _messageController.clear();
-                setState(() {}); // Forzar una actualización de la interfaz de usuario
+                setState(
+                    () {}); // Forzar una actualización de la interfaz de usuario
               }
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryColor,
+              textStyle: TextStyle(color: Colors.white, fontSize: 20),
+            ),
           ),
         ],
       ),

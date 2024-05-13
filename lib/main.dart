@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
         '/search_results': (context) => SearchResultsScreen(), //Pantalla de resultados de búsqueda
         '/favorites': (context) => FavoritesScreen(), //Pantalla de favoritos
         '/chat_list': (context) => ChatListScreen(), //Pantalla de lista de chats
-        '/chat': (context) => ChatScreen(chatId: 'chatId', userId: 'userId', businessId: 'businessId', businessName: 'businessName',), //Pantalla de chat
+        '/chat': (context) => ChatScreen(chatId: 'chatId', userId: 'userId', businessId: 'businessId', businessName: 'businessName', userName: 'userName', isCustomer: false), //Pantalla de chat
       },
       home:
           WelcomeScreen(), // Se ha establecido WelcomeScreen como página de inicio de la app

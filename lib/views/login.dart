@@ -8,8 +8,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/custom_toast.dart';
 import 'business_screen.dart';
 
-// import 'package:flutter_with_firebase_owp/auth/structure/controllers/auth_controller.dart';
-
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -191,8 +189,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .collection('users')
                                 .doc(userId)
                                 .get();
-
-                            // Navigator.pushNamed(context, '/services');
 
                             if (userDoc.exists) {
                               // Si el usuario existe en la tabla de usuarios, redirige a la pantalla de cliente

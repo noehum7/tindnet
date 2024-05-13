@@ -24,6 +24,11 @@ class ServiceScreen extends StatelessWidget {
     return querySnapshot.docs.map((doc) => Business.fromDocument(doc)).toList();
   }
 
+  Future<String> getUserName(String userId) async {
+    DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    return userSnapshot.exists ? userSnapshot['name'] : 'Unknown User';
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Business>>(
@@ -233,19 +238,24 @@ class ServiceScreen extends StatelessWidget {
                                             size: 40,
                                           ),
                                         ),
-                                        onPressed: () {
+                                        onPressed: () async {
                                           User? currentUser = FirebaseAuth.instance.currentUser;
                                           if (currentUser != null) {
                                             String userId = currentUser.uid;
                                             String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa
                                             String chatId = '$userId-$businessId'; // Genera un chatId único
+                                            String userName = await getUserName(userId); // Obtén el nombre del usuario
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                builder: (context) => ChatScreen(chatId: chatId,
+                                                builder: (context) => ChatScreen(
+                                                  chatId: chatId,
                                                   userId: userId,
                                                   businessId: businessId,
-                                                  businessName: businesses[index].name,),
+                                                  businessName: businesses[index].name,
+                                                  userName: userName, //AÑADIDO ESTO
+                                                  isCustomer: true,
+                                                ),
                                               ),
                                             );
                                           } else {

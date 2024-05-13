@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> startChat(String userId, String businessId, String businessName) async {
+  Future<void> startChat(String userId, String businessId, String businessName, String userName) async {
     String chatId = '$userId-$businessId'; // Genera un chatId único
     DocumentSnapshot chatSnapshot = await _firestore.collection('chats').doc(chatId).get();
 
@@ -18,6 +18,7 @@ class ChatService {
         'participants': [userId, businessId],
         'businessId': businessId, // Almacena businessId en el documento del chat
         'businessName': businessName, // Almacena businessName en el documento del chat
+        'userName': userName, // Almacena userName en el documento del chat
       });
     }
   }
@@ -46,9 +47,11 @@ class ChatService {
     await chatRef.delete();
   }
 
+
   Stream<QuerySnapshot> getUserChats(String userId) {
     return _firestore.collection('chats').where('participants', arrayContains: userId).snapshots();
   }
+
 
   Stream<QuerySnapshot> getChatMessages(String chatId) async* {
     DocumentSnapshot chatSnapshot = await _firestore.collection('chats').doc(chatId).get();
