@@ -103,10 +103,13 @@ class CustomDrawerCustomer extends StatelessWidget {
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
                 await forgetUser();
-                // Navigator.pushNamed(context, '/login');
-                Navigator.pushReplacement(
-                  context,
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => LoginScreen()),
+                // );
+                Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
+                      (Route<dynamic> route) => false,
                 );
                 customToast.showSuccessToast("Has cerrado sesión!");
               },

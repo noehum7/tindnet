@@ -1,4 +1,7 @@
+import 'dart:io'; // Cambia esto
+import 'package:path/path.dart'; // Añade esto
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 /*
   ChatService se encarga de todas las interacciones con Firestore relacionadas con el chat.
@@ -8,12 +11,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> startChat(String userId, String businessId, String businessName, String userName) async {
+  Future<void> startChat(String userId, String businessId, String businessName, String userName, bool isCustomer) async {
     String chatId = '$userId-$businessId'; // Genera un chatId único
     DocumentSnapshot chatSnapshot = await _firestore.collection('chats').doc(chatId).get();
 
-    if (!chatSnapshot.exists) {
-      // Si el chat no existe, crea uno nuevo
+    if (!chatSnapshot.exists && isCustomer) {
+      // Si el chat no existe y eres un cliente, crea uno nuevo
       return _firestore.collection('chats').doc(chatId).set({
         'participants': [userId, businessId],
         'businessId': businessId, // Almacena businessId en el documento del chat
@@ -67,6 +70,38 @@ class ChatService {
     } else {
       // Si el chat no existe, devuelve un Stream vacío
       yield* Stream<QuerySnapshot>.empty();
+    }
+  }
+
+  Future<DocumentSnapshot> getLastMessage(String chatId) {
+    return _firestore
+        .collection('chats')
+        .doc(chatId)
+        .collection('messages')
+        .orderBy('timestamp', descending: true)
+        .limit(1)
+        .get()
+        .then((snapshot) => snapshot.docs.first);
+  }
+
+  Future<String> uploadAudio(String filePath) async {
+    File file = File(filePath);
+    String fileName = basename(filePath); // Obtén el nombre del archivo de la ruta
+
+    try {
+      // Sube el archivo a Firebase Storage
+      UploadTask task = FirebaseStorage.instance
+          .ref('audio_messages/$fileName')
+          .putFile(file);
+
+      // Espera hasta que la tarea de subida se complete y obtén la URL de descarga
+      TaskSnapshot snapshot = await task;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      return downloadUrl;
+    } catch (e) {
+      print(e);
+      return '';
     }
   }
 }
