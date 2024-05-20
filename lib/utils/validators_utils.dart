@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 
+/*
+   Clase `FormValidator` que proporciona métodos para validar diferentes tipos de entradas de formularios.
+ */
+
 class FormValidator {
   String? isValidName(String? text) {
     if (text == null || text.isEmpty || text.length < 3) {
@@ -78,30 +82,4 @@ class FormValidator {
     return null;
   }
 
-// static String? validateEmail(String? value) {
-//     if (value == null || value.isEmpty) {
-//       return 'Email is required';
-//     }
-//     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-//       return 'Please enter a valid email';
-//     }
-//     return null;
-//   }
-//
-//   static String? validatePassword(String? value) {
-//     if (value == null || value.isEmpty) {
-//       return 'Password is required';
-//     }
-//     if (value.length < 6) {
-//       return 'Password must be at least 6 characters';
-//     }
-//     return null;
-//   }
-//
-//   static String? validateName(String? value) {
-//     if (value == null || value.isEmpty) {
-//       return 'Name is required';
-//     }
-//     return null;
-//   }
 }

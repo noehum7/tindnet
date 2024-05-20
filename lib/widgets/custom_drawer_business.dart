@@ -6,6 +6,13 @@ import 'package:tindnet/constants/app_colors.dart';
 import '../views/login.dart';
 import 'custom_toast.dart';
 
+/*
+   Clase `CustomDrawerBusiness` que proporciona un menú lateral personalizado para las empresas.
+   Proporciona funcionalidades para:
+     - Navegar a diferentes páginas de la aplicación: Mi Perfil, Chats, Reseñas, Ajustes.
+     - Cerrar sesión: Borra la información del usuario y redirige a la pantalla de inicio de sesión.
+ */
+
 class CustomDrawerBusiness extends StatelessWidget {
   final String currentPage;
   CustomToast customToast = CustomToast();
@@ -83,10 +90,6 @@ class CustomDrawerBusiness extends StatelessWidget {
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
                 await forgetUser();
-                // Navigator.pushReplacement(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => LoginScreen()),
-                // );
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                       (Route<dynamic> route) => false,

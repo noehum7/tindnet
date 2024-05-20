@@ -4,12 +4,18 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 /*
-Clase donde se maneja el envio de audios en el chat
+  Clase `VoiceRecorder` que maneja la grabación de audios en el chat.
+  Proporciona métodos para:
+    - Iniciar la grabación: `startRecording` inicia la grabación de un audio y guarda el archivo en una ruta temporal.
+    - Detener la grabación: `stopRecording` detiene la grabación del audio y devuelve la ruta del archivo de audio.
+    - Verificar si el grabador está inicializado: `isInitialized` devuelve un booleano que indica si el grabador está inicializado.
+    - Verificar si se está grabando: `isRecording` devuelve un booleano que indica si se está grabando un audio.
  */
+
 class VoiceRecorder {
   FlutterSoundRecorder? _audioRecorder;
   bool _isRecording = false;
-  String _filePath = ''; // Define la ruta del archivo de audio aquí
+  String _filePath = '';
 
   VoiceRecorder() {
     _init();
@@ -17,7 +23,6 @@ class VoiceRecorder {
 
   Future<void> _init() async {
     _audioRecorder = FlutterSoundRecorder();
-    // await _audioRecorder!.openRecorder();
   }
 
   Future<void> startRecording() async {
@@ -42,9 +47,6 @@ class VoiceRecorder {
     }
     _isRecording = false;
 
-    // Verifica si el archivo existe
-    checkFileExists(_filePath);
-
     return _filePath;
   }
 
@@ -56,15 +58,4 @@ class VoiceRecorder {
     return _isRecording;
   }
 
-
-  // Función para verificar si un archivo existe
-  void checkFileExists(String filePath) async {
-    final file = File(filePath);
-
-    if (await file.exists()) {
-      print('El archivo existe en la ruta especificada.');
-    } else {
-      print('El archivo no existe en la ruta especificada.');
-    }
-  }
 }

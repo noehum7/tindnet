@@ -29,6 +29,12 @@ class ServiceScreen extends StatelessWidget {
     return userSnapshot.exists ? userSnapshot['name'] : 'Unknown User';
   }
 
+  String truncateWithEllipsis(int cutoff, String myString) {
+    return (myString.length <= cutoff)
+        ? myString
+        : '${myString.substring(0, myString.lastIndexOf(' ', cutoff))} ...';
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Business>>(
@@ -128,13 +134,44 @@ class ServiceScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(height: 10.0),
+                                  // Align(
+                                  //   alignment: Alignment.centerLeft,
+                                  //   child: Text(
+                                  //     businesses[index].aboutUs ??
+                                  //         'Información de la empresa no disponible.',
+                                  //     textAlign: TextAlign.left,
+                                  //     style: TextStyle(fontSize: 14, color: AppColors.primaryColor),
+                                  //   ),
+                                  // ),
                                   Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      businesses[index].aboutUs ??
-                                          'Información de la empresa no disponible.',
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(fontSize: 14, color: AppColors.primaryColor),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text('Descripción completa'),
+                                              content: Text(businesses[index].aboutUs ?? 'Información de la empresa no disponible.'),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  child: Text('Cerrar'),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Text(
+                                        businesses[index].aboutUs != null && businesses[index].aboutUs!.length > 70
+                                            ? truncateWithEllipsis(70, businesses[index].aboutUs!)
+                                            : businesses[index].aboutUs ?? 'Información de la empresa no disponible.',
+                                        textAlign: TextAlign.left,
+                                        style: TextStyle(fontSize: 14, color: AppColors.primaryColor),
+                                      ),
                                     ),
                                   ),
                                   SizedBox(height: 20.0),

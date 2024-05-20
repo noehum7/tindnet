@@ -6,9 +6,13 @@ import '../utils/validators_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/custom_toast.dart';
 
+/*
+  Clase que muestra el formulario de registro de clientes,
+*/
+
 class CustomerRegistrationScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  CustomToast customToast = CustomToast();
+  final CustomToast customToast = CustomToast();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -18,6 +22,8 @@ class CustomerRegistrationScreen extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+
+  CustomerRegistrationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

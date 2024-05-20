@@ -6,6 +6,13 @@ import 'package:tindnet/widgets/custom_toast.dart';
 
 import '../views/login.dart';
 
+/*
+   Clase `CustomDrawerCustomer` que proporciona un menú lateral personalizado para los clientes.
+   Proporciona funcionalidades para:
+     - Navegar a diferentes páginas de la aplicación: Inicio, Búsqueda, Favoritos, Chats, Mi Perfil, Ajustes.
+     - Cerrar sesión: Borra la información del usuario y redirige a la pantalla de inicio de sesión.
+ */
+
 class CustomDrawerCustomer extends StatelessWidget {
   final String currentPage;
   CustomToast customToast = CustomToast();
@@ -103,10 +110,6 @@ class CustomDrawerCustomer extends StatelessWidget {
               onTap: () async {
                 await FirebaseAuth.instance.signOut();
                 await forgetUser();
-                // Navigator.pushReplacement(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => LoginScreen()),
-                // );
                 Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => LoginScreen()),
                       (Route<dynamic> route) => false,

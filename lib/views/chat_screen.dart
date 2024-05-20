@@ -217,7 +217,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           widget.businessId,
                           widget.businessName,
                           widget.userName,
-                          widget.isCustomer // Pasamos si el usuario es un cliente o no
+                          widget.isCustomer
                       );
 
                       _chatService.sendMessage(
@@ -227,7 +227,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       );
 
                       _messageController.clear();
-                      setState(() {}); // Forzar una actualización de la interfaz de usuario
+                      setState(() {}); // Forzar una actualización de la interfaz de usuario para mostrar los nuevos mensajes
                     }
                   },
                 ),

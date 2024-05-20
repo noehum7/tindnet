@@ -15,6 +15,8 @@ import 'package:tindnet/views/customer_registration.dart';
 import 'views/business_registration.dart';
 import 'constants/app_colors.dart';
 
+ // Función principal que se ejecuta al iniciar la aplicación y se encarga de inicializar Firebase y de ejecutar la aplicación.
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -23,6 +25,8 @@ void main() async {
 
   runApp(MyApp());
 }
+
+// Clase principal de la aplicación que define la estructura y el comportamiento de la aplicación
 
 class MyApp extends StatelessWidget {
   @override
@@ -61,7 +65,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(), //Pantalla de login
         '/customer_registration': (context) => CustomerRegistrationScreen(), //Pantalla de registro de clientes
         '/business_registration': (context) => BusinessRegistrationScreen(), //Pantalla de registro de empresas
-        '/services': (context) => ServiceScreen(), //Pantalla principal de los clientes, que te muestra las empresas tipo Tinder
+        '/services': (context) => ServiceScreen(), //Pantalla principal de los clientes, que te muestra las empresas con un slider
         '/business': (context) => BusinessProfileScreen(), //Pantalla principal de las empresas
         '/search': (context) => SearchScreen(), //Pantalla de búsqueda de servicios
         '/search_results': (context) => SearchResultsScreen(), //Pantalla de resultados de búsqueda

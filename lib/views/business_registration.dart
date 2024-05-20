@@ -5,7 +5,13 @@ import '../constants/app_colors.dart';
 import '../utils/validators_utils.dart';
 import '../widgets/custom_toast.dart';
 
+/*
+  Clase que muestra el formulario de registro de empresas
+ */
+
 class BusinessRegistrationScreen extends StatefulWidget {
+  const BusinessRegistrationScreen({super.key});
+
   @override
   _BusinessRegistrationScreenState createState() => _BusinessRegistrationScreenState();
 }

@@ -5,7 +5,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 /*
   ChatService se encarga de todas las interacciones con Firestore relacionadas con el chat.
-  Iniciar chats, obtener lista de chats, enviar mensajes y escuchar los mensajes de un chat.
+  Proporciona métodos para:
+  - Iniciar chats: `startChat` crea un nuevo chat en Firestore entre un usuario y un negocio.
+  - Enviar mensajes: `sendMessage` añade un nuevo mensaje a un chat específico en Firestore.
+  - Eliminar chats: `deleteChat` elimina un chat y todos sus mensajes de Firestore. Esto tengo que retocarlo porque borra el chat tanto para el cliente como para la empresa.
+  - Obtener chats de un usuario: `getUserChats` devuelve un Stream de QuerySnapshot que contiene todos los chats en los que participa un usuario específico.
+  - Obtener mensajes de un chat: `getChatMessages` devuelve un Stream de QuerySnapshot que contiene todos los mensajes de un chat específico.
+  - Obtener el último mensaje de un chat: `getLastMessage` devuelve un Future de DocumentSnapshot que contiene el último mensaje enviado en un chat específico.
+  - Subir archivos de audio: `uploadAudio` sube un archivo de audio a Firebase Storage y devuelve la URL de descarga.
  */
 
 class ChatService {
@@ -16,12 +23,12 @@ class ChatService {
     DocumentSnapshot chatSnapshot = await _firestore.collection('chats').doc(chatId).get();
 
     if (!chatSnapshot.exists && isCustomer) {
-      // Si el chat no existe y eres un cliente, crea uno nuevo
+      // Si el chat no existe y eres un cliente, crea uno nuevo y lo guarda en la base de datos
       return _firestore.collection('chats').doc(chatId).set({
         'participants': [userId, businessId],
-        'businessId': businessId, // Almacena businessId en el documento del chat
-        'businessName': businessName, // Almacena businessName en el documento del chat
-        'userName': userName, // Almacena userName en el documento del chat
+        'businessId': businessId,
+        'businessName': businessName,
+        'userName': userName,
       });
     }
   }
@@ -35,18 +42,13 @@ class ChatService {
   }
 
   Future<void> deleteChat(String chatId) async {
-    // Primero, obtén una referencia al chat
     DocumentReference chatRef = _firestore.collection('chats').doc(chatId);
-
-    // Luego, obtén todos los mensajes del chat
     QuerySnapshot messagesSnapshot = await chatRef.collection('messages').get();
 
-    // Después, para cada mensaje en el chat, elimínalo
     for (DocumentSnapshot message in messagesSnapshot.docs) {
       await chatRef.collection('messages').doc(message.id).delete();
     }
 
-    // Finalmente, elimina el chat
     await chatRef.delete();
   }
 
@@ -60,7 +62,6 @@ class ChatService {
     DocumentSnapshot chatSnapshot = await _firestore.collection('chats').doc(chatId).get();
 
     if (chatSnapshot.exists) {
-      // Si el chat existe, obtiene sus mensajes
       yield* _firestore
           .collection('chats')
           .doc(chatId)
@@ -100,8 +101,7 @@ class ChatService {
 
       return downloadUrl;
     } catch (e) {
-      print(e);
-      return '';
+      return 'Error al subir el archivo de audio';
     }
   }
 }

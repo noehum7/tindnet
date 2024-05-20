@@ -1,25 +1,10 @@
-// class Business {
-//   final String photoUrl;
-//   final String companyName;
-//   final String location;
-//   final String aboutUs;
-//   final String contactPhone;
-//   final String contactEmail;
-//   final String website;
-//
-//   Business({
-//     required this.photoUrl,
-//     required this.companyName,
-//     required this.location,
-//     required this.aboutUs,
-//     required this.contactPhone,
-//     required this.contactEmail,
-//     required this.website,
-//   });
-//
-// }
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+/*
+  Clase `Business` que representa una empresa en la aplicación.
+  Cada instancia de `Business` contiene información detallada sobre un negocio, incluyendo su id, nombre, CIF, email, servicio, teléfono, URL, ubicación, descripción y sitio web.
+  Esta clase también proporciona métodos para convertir un `DocumentSnapshot` en un objeto `Business` y viceversa. Esto es útil cuando se trabaja con Firestore, ya que permite una fácil conversión entre los documentos de Firestore y los objetos de la aplicación.
+*/
 
 class Business {
   final String id;
@@ -33,22 +18,6 @@ class Business {
   String? aboutUs;
   String? web;
 
-
-  // // Constructor por defecto
-  // Business({
-  //   this.id = '',
-  //   this.name = '',
-  //   this.cif = '',
-  //   this.email = '',
-  //   this.service = '',
-  //   this.phone = '',
-  //   this.url = '',
-  //   this.location = '',
-  //   this.aboutUs = '',
-  //   this.web = '',
-  // });
-
-  // Business.fromData({
   Business({
     required this.id,
     required this.name,

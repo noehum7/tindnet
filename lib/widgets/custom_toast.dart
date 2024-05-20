@@ -2,6 +2,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:tindnet/constants/app_colors.dart';
 
+/*
+  Clase `CustomToast` que proporciona métodos para mostrar diferentes tipos de toasts.
+  Proporciona funcionalidades para:
+     - Mostrar un toast de éxito: Muestra un toast con un mensaje de éxito y un icono de verificación.
+     - Mostrar un toast de error: Muestra un toast con un mensaje de error y un icono de error.
+     - Mostrar un toast de información: Muestra un toast con un mensaje de información.
+ */
+
 class CustomToast {
   void showSuccessToast(String message) {
     Fluttertoast.showToast(

@@ -1,6 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/*
+  Clase `Category` que representa una categoría en la aplicación.
+  Cada instancia de `Category` contiene el nombre de la categoría y un icono asociado.
+  Esta clase también proporciona una lista predefinida de categorías que se utilizan en la aplicación.
+ */
+
 class Category {
   final String name;
   final IconData icon;
