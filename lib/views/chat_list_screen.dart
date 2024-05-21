@@ -7,6 +7,15 @@ import '../widgets/custom_drawer_customer.dart';
 import '../widgets/custom_drawer_business.dart';
 import 'chat_screen.dart';
 
+/*
+ * `ChatListScreen` es una clase que representa la pantalla con la lista de chats del usuario.
+ * Los chats se recuperan de Firestore y se muestran en una lista.
+ * Al tocar un ListTile, se navega a la pantalla de chat correspondiente.
+ * Al deslizar un ListTile, se elimina el chat correspondiente de Firestore.
+ *
+ * Esta clase utiliza `ChatService` para recuperar y eliminar chats.
+ */
+
 class ChatListScreen extends StatelessWidget {
   final ChatService _chatService = ChatService();
 
@@ -47,9 +56,7 @@ class ChatListScreen extends StatelessWidget {
                         return CircularProgressIndicator();
                       }
                       DocumentSnapshot lastMessage = snapshot.data!;
-                      // String text = lastMessage['text'] ?? '';
                       String text = lastMessage != null ? lastMessage['text'] ?? '' : '';
-                      // Timestamp? timestamp = lastMessage['timestamp'];
                       Timestamp? timestamp = lastMessage != null ? lastMessage['timestamp'] : null;
                       String time = timestamp != null
                           ? DateFormat('Hm').format(timestamp.toDate())

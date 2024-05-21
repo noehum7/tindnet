@@ -6,11 +6,29 @@ import '../constants/app_colors.dart';
 import '../services/favorites_businesses.dart';
 import '../widgets/custom_toast.dart';
 
+/*
+/// `SearchResultsScreen` es una clase que muestra una lista de empresas basada en los criterios de búsqueda del usuario.
+///
+/// Utiliza `FutureBuilder` para obtener las empresas de Firestore y mostrarlas en una lista.
+/// Cada elemento de la lista muestra información detallada sobre una empresa, incluyendo su nombre y servicio.
+///
+/// Los usuarios pueden interactuar con cada elemento de la lista de dos maneras:
+/// 1. Pueden ver más detalles sobre la empresa haciendo clic en el elemento de la lista. Esto abrirá un diálogo con más información.
+/// 2. Pueden agregar la empresa a sus favoritos haciendo clic en el icono de corazón.
+///
+/// Esta clase utiliza varios métodos auxiliares:
+/// - `getBusinessesByCategory`: Obtiene una lista de todas las empresas de una categoría específica de Firestore.
+/// - `getBusinessesByName`: Obtiene una lista de todas las empresas con un nombre específico de Firestore.
+/// - `_showCompanyCardDialog`: Muestra un diálogo con más información sobre una empresa.
+///
+/// El método `build` de esta clase devuelve un `FutureBuilder` que espera que se complete el futuro `getBusinessesByCategory` o `getBusinessesByName`.
+/// Dependiendo del estado de este futuro, muestra un spinner de carga, un mensaje de error o una lista de empresas.
+ */
+
 class SearchResultsScreen extends StatefulWidget {
   final String selectedCategory;
   final String companyName;
 
-  // SearchResultsScreen({required this.selectedCategory, required this.companyName});
   SearchResultsScreen({this.selectedCategory = '', this.companyName = ''});
 
   @override
@@ -56,7 +74,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
           content: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // Aquí va la tarjeta de la empresa
                 Card(
                   color: AppColors.welcomeColor,
                   elevation: 0,
@@ -147,7 +164,7 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                               icon: Icon(Icons.chat,
                                   color: AppColors.primaryColor, size: 40),
                               onPressed: () {
-                                // Aquí va la lógica para abrir el chat
+                                // Aquí va la lógica para abrir el chat, pero no está implementado en esta sección.
                               },
                             ),
                             IconButton(
@@ -160,7 +177,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                                   favoritesBusinesses.addToFavorites(userId, businessId);
                                   customToast.showSuccessToast("Empresa guardada en favoritos!");
                                 } else {
-                                  // Manejar el caso en que no hay un usuario autenticado
                                   customToast.showErrorToast("Necesitas iniciar sesión para guardar favoritos!");
                                 }
                               },
@@ -191,9 +207,6 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Resultados de la búsqueda"),
-      // ),
       appBar: AppBar(
         title: FittedBox(
           fit: BoxFit.scaleDown,
@@ -240,16 +253,14 @@ class _SearchResultsScreenState extends State<SearchResultsScreen> {
                       businesses[index].data() as Map<String, dynamic>?;
                   return GestureDetector(
                     onTap: () {
-                      String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa
+                      String businessId = businesses[index].id;
                       _showCompanyCardDialog(context, data!, businessId);
                     },
                     child: Card(
                       child: ListTile(
                         leading: Icon(Icons.business),
-                        // Puedes reemplazar esto con un logo o imagen de la empresa
                         title: Text(data?['name'] ?? ''),
                         subtitle: Text(data?['service'] ?? ''),
-                        // ... otros detalles del resultado de la búsqueda ...
                       ),
                     ),
                   );

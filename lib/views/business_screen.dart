@@ -9,7 +9,18 @@ import '../models/business.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /*
-Pantalla principal cuando una empresa se loguea.
+ * `BusinessProfileScreen` es una clase que representa la pantalla de perfil de una empresa.
+ *
+ * Esta pantalla muestra la información de la empresa que está actualmente autenticada.
+ * La información se recupera de Firestore y se muestra en varios campos de texto.
+ * Los campos de texto son editables, lo que permite a la empresa actualizar su información.
+ * La pantalla también muestra una imagen de perfil de la empresa, que se puede actualizar.
+ *
+ * Al presionar el botón 'Guardar cambios', se validan los datos introducidos y, si son válidos,
+ * se actualizan en Firestore. Si la validación falla, se muestran mensajes de error.
+ *
+ * Esta clase utiliza `FormValidator` para la validación de los datos introducidos.
+ *
  */
 
 class BusinessProfileScreen extends StatefulWidget {
@@ -24,10 +35,8 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Obtiene el ID del usuario actualmente autenticado
   final String businessId = FirebaseAuth.instance.currentUser!.uid;
 
-  // late Business business;
   Business? business;
 
   @override
@@ -36,7 +45,6 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
     getBusinessData();
   }
 
-  // Future<Business> getBusinessData() async { //He cambiado esto
   Future<void> getBusinessData() async {
     DocumentSnapshot doc =
         await _firestore.collection('businesses').doc(businessId).get();
@@ -64,17 +72,6 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
           toolbarHeight: MediaQuery.of(context).size.height * 0.07,
         ),
         drawer: CustomDrawerBusiness(currentPage: 'Mi Perfil'),
-        // body: FutureBuilder<Business>(
-        //   future: getBusinessData(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.waiting) {
-        //       return CircularProgressIndicator();
-        //     } else if (snapshot.hasError) {
-        //       return Text('Error: ${snapshot.error}');
-        //     } else {
-        //       Business business = snapshot.data!;
-        //       // business = snapshot.data!;
-        //       return SingleChildScrollView(
         body: business == null
             ? CircularProgressIndicator()
             : SingleChildScrollView(
@@ -127,7 +124,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               decoration: InputDecoration(
                                 labelText: 'CIF',
                                 labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 errorMaxLines: 2,
                                 filled: true,
                                 fillColor: AppColors.welcomeColor,
@@ -159,7 +156,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Servicio',
                                 labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 errorMaxLines: 2,
                                 filled: true,
                                 fillColor: AppColors.welcomeColor,
@@ -179,7 +176,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Teléfono',
                                 labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 errorMaxLines: 2,
                                 filled: true,
                                 fillColor: AppColors.welcomeColor,
@@ -187,7 +184,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
                                 ),
-                                prefixIcon: Icon(Icons.phone_android), // Icono agregado
+                                prefixIcon: Icon(Icons.phone_android),
                               ),
                               onChanged: (value) => business?.phone = value,
                             ),
@@ -198,7 +195,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Imagen de perfil',
                                 labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 errorMaxLines: 2,
                                 filled: true,
                                 fillColor: AppColors.welcomeColor,
@@ -206,7 +203,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
                                 ),
-                                prefixIcon: Icon(Icons.image), // Icono agregado
+                                prefixIcon: Icon(Icons.image),
                               ),
                               onChanged: (value) => business?.url = value,
                             ),
@@ -217,7 +214,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Dirección de la empresa',
                                 labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 errorMaxLines: 2,
                                 filled: true,
                                 fillColor: AppColors.welcomeColor,
@@ -225,7 +222,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
                                 ),
-                                prefixIcon: Icon(Icons.location_on_outlined), // Icono agregado
+                                prefixIcon: Icon(Icons.location_on_outlined),
                               ),
                               onChanged: (value) => business?.location = value,
                             ),
@@ -236,7 +233,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Sobre nosotros',
                                 labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 errorMaxLines: 2,
                                 filled: true,
                                 fillColor: AppColors.welcomeColor,
@@ -244,7 +241,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
                                 ),
-                                prefixIcon: Icon(Icons.info_outline), // Icono agregado
+                                prefixIcon: Icon(Icons.info_outline),
                               ),
                               onChanged: (value) => business?.aboutUs = value,
                             ),
@@ -255,7 +252,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               decoration: InputDecoration(
                                 labelText: 'Página web de la empresa',
                                 labelStyle:
-                                TextStyle(fontWeight: FontWeight.bold),
+                                    TextStyle(fontWeight: FontWeight.bold),
                                 errorMaxLines: 2,
                                 filled: true,
                                 fillColor: AppColors.welcomeColor,
@@ -263,7 +260,7 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                                   borderRadius: BorderRadius.circular(10.0),
                                   borderSide: BorderSide.none,
                                 ),
-                                prefixIcon: Icon(Icons.web), // Icono agregado
+                                prefixIcon: Icon(Icons.web),
                               ),
                               onChanged: (value) => business?.web = value,
                             ),
@@ -283,16 +280,6 @@ class _BusinessProfileScreenState extends State<BusinessProfileScreen> {
                               },
                             ),
                           ],
-//                         )),
-//                   ),
-//                 ),
-//               );
-//             }
-//           },
-//         ),
-//       );
-//   }
-// }
                         )),
                   ),
                 ),

@@ -10,11 +10,21 @@ import 'package:tindnet/widgets/custom_toast.dart';
 import '../services/favorites_businesses.dart';
 import '../widgets/custom_drawer_customer.dart';
 import 'chat_screen.dart';
-import '../services/chat_service.dart';
 
+/*
+/// `ServiceScreen` es una clase que muestra unas tarjetas de empresas a los clientes.
+///
+/// Utiliza `FutureBuilder` para obtener las empresas de Firestore y mostrarlas en un `CardSwiper`.
+/// Cada tarjeta muestra información detallada sobre una empresa, incluyendo su nombre, descripción,
+/// servicio, ubicación, teléfono, correo electrónico y sitio web.
+///
+/// Los clientes pueden interactuar con cada tarjeta de dos maneras:
+/// 1. Pueden iniciar un chat con la empresa haciendo clic en el icono de chat.
+/// 2. Pueden agregar la empresa a sus favoritos haciendo clic en el icono de favorito.
+///
+ */
 class ServiceScreen extends StatelessWidget {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final ChatService _chatService = ChatService();
   CustomToast customToast = CustomToast();
   FavoritesBusinesses favoritesBusinesses = FavoritesBusinesses();
 
@@ -26,7 +36,7 @@ class ServiceScreen extends StatelessWidget {
 
   Future<String> getUserName(String userId) async {
     DocumentSnapshot userSnapshot = await FirebaseFirestore.instance.collection('users').doc(userId).get();
-    return userSnapshot.exists ? userSnapshot['name'] : 'Unknown User';
+    return userSnapshot.exists ? userSnapshot['name'] : 'Usuario desconocido';
   }
 
   String truncateWithEllipsis(int cutoff, String myString) {
@@ -70,7 +80,6 @@ class ServiceScreen extends StatelessWidget {
                     cardsCount: businesses.length,
                     numberOfCardsDisplayed:
                         businesses.length <= 3 ? businesses.length : 3,
-                    // Asegúrate de que numberOfCardsDisplayed no exceda cardsCount
                     cardBuilder: (context, index, realIndex, cardIndex) {
                       return Container(
                         decoration: BoxDecoration(
@@ -82,7 +91,7 @@ class ServiceScreen extends StatelessWidget {
                               //   AppColors.secondaryColor,
                               // ]),
                               colors: [Color(0xFFf3722c), Color(0xFFf9c74f)]),
-                          boxShadow: [ // Sombra para dar profundidad
+                          boxShadow: [ // Añade una sombra alrededor del contenedor
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 5,
@@ -100,7 +109,7 @@ class ServiceScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(16.0),
                               child: Column(
                                 children: <Widget>[
-                                  // Image.asset( Si quisiera poner una imagen local del proyecto
+                                  // Image.asset( Si quisiera poner una imagen local del proyecto en vez de un enlace de internet
                                   Image.network(
                                     businesses[index].url ??
                                         'https://via.placeholder.com/150',
@@ -111,7 +120,7 @@ class ServiceScreen extends StatelessWidget {
                                     errorBuilder: (BuildContext context,
                                         Object exception,
                                         StackTrace? stackTrace) {
-                                      // Si ocurre un error al cargar la imagen, se muestra una imagen de respaldo
+                                      // Si ocurre un error al cargar la imagen, se muestra una imagen de respaldo de los archivos del proyecto
                                       return Image.asset(
                                         'assets/images/logoblanco.jpg',
                                         height:
@@ -180,7 +189,6 @@ class ServiceScreen extends StatelessWidget {
                                       Icon(Icons.work,
                                           size: 20,
                                           color: AppColors.primaryColor),
-                                      // Icono de servicios
                                       SizedBox(width: 10.0),
                                       Text(businesses[index].service,
                                           style: TextStyle(fontSize: 16,
@@ -235,8 +243,6 @@ class ServiceScreen extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      // Text(businesses[index].email,
-                                      //     style: TextStyle(fontSize: 16)),
                                     ],
                                   ),
                                   SizedBox(height: 10.0),
@@ -264,10 +270,10 @@ class ServiceScreen extends StatelessWidget {
                                     children: <Widget>[
                                       IconButton(
                                         icon: Container(
-                                          padding: EdgeInsets.all(8.0), // Añade un relleno alrededor del icono
+                                          padding: EdgeInsets.all(8.0),
                                           decoration: BoxDecoration(
-                                            color: Colors.white, // Añade un color de fondo
-                                            shape: BoxShape.circle, // Hace que el fondo sea circular
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
                                           ),
                                           child: Icon(
                                             Icons.chat,
@@ -279,9 +285,9 @@ class ServiceScreen extends StatelessWidget {
                                           User? currentUser = FirebaseAuth.instance.currentUser;
                                           if (currentUser != null) {
                                             String userId = currentUser.uid;
-                                            String businessId = businesses[index].id; // Asegúrate de tener el id de la empresa
-                                            String chatId = '$userId-$businessId'; // Genera un chatId único
-                                            String userName = await getUserName(userId); // Obtén el nombre del usuario
+                                            String businessId = businesses[index].id;
+                                            String chatId = '$userId-$businessId';
+                                            String userName = await getUserName(userId);
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -290,22 +296,22 @@ class ServiceScreen extends StatelessWidget {
                                                   userId: userId,
                                                   businessId: businessId,
                                                   businessName: businesses[index].name,
-                                                  userName: userName, //AÑADIDO ESTO
+                                                  userName: userName,
                                                   isCustomer: true,
                                                 ),
                                               ),
                                             );
                                           } else {
-                                            customToast.showErrorToast("Ha ocurrido un error,");
+                                            customToast.showErrorToast("Ha ocurrido un error.");
                                           }
                                         },
                                       ),
                                       IconButton(
                                         icon: Container(
-                                          padding: EdgeInsets.all(8.0), // Añade un relleno alrededor del icono
+                                          padding: EdgeInsets.all(8.0),
                                           decoration: BoxDecoration(
-                                            color: Colors.white, // Añade un color de fondo
-                                            shape: BoxShape.circle, // Hace que el fondo sea circular
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
                                           ),
                                           child: Icon(
                                             Icons.favorite,
@@ -320,13 +326,12 @@ class ServiceScreen extends StatelessWidget {
                                             String userId = currentUser.uid;
                                             String businessId = businesses[
                                                     index]
-                                                .id; // Asegúrate de tener el id de la empresa
+                                                .id;
                                             favoritesBusinesses.addToFavorites(
                                                 userId, businessId);
                                             customToast.showSuccessToast(
                                                 "Empresa guardada en favoritos!");
                                           } else {
-                                            // Manejar el caso en que no hay un usuario autenticado
                                             customToast.showErrorToast(
                                                 "Necesitas iniciar sesión para guardar favoritos!");
                                           }

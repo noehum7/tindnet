@@ -6,6 +6,25 @@ import '../services/favorites_businesses.dart';
 import '../widgets/custom_drawer_customer.dart';
 import '../constants/app_colors.dart';
 
+/*
+/// `FavoritesScreen` es una clase que muestra una lista de las empresas favoritas del usuario.
+///
+/// Utiliza `FutureBuilder` para obtener las empresas favoritas del usuario de Firestore y mostrarlas en una lista.
+/// Cada elemento de la lista muestra información detallada sobre una empresa, incluyendo su nombre y servicio.
+///
+/// Los usuarios pueden interactuar con cada elemento de la lista de dos maneras:
+/// 1. Pueden ver más detalles sobre la empresa haciendo clic en el elemento de la lista. Esto abrirá un diálogo con más información.
+/// 2. Pueden eliminar la empresa de sus favoritos haciendo clic en el icono de corazón roto.
+///
+/// Esta clase utiliza varios métodos auxiliares:
+/// - `getFavoriteBusinesses`: Obtiene una lista de todas las empresas favoritas del usuario de Firestore.
+/// - `_updateFavoriteBusinesses`: Actualiza la lista de empresas favoritas del usuario.
+/// - `_showCompanyCardDialog`: Muestra un diálogo con más información sobre una empresa.
+///
+/// El método `build` de esta clase devuelve un `FutureBuilder` que espera que se complete el futuro `favoriteBusinesses`.
+/// Dependiendo del estado de este futuro, muestra un spinner de carga, un mensaje de error o una lista de empresas favoritas.
+ */
+
 class FavoritesScreen extends StatefulWidget {
   @override
   _FavoritesScreenState createState() => _FavoritesScreenState();
@@ -65,7 +84,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           content: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // Aquí va la tarjeta de la empresa
                 Card(
                   color: AppColors.welcomeColor,
                   elevation: 0,
@@ -156,7 +174,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               icon: Icon(Icons.chat,
                                   color: AppColors.primaryColor, size: 40),
                               onPressed: () {
-                                // Aquí va la lógica para abrir el chat
+                                // Aquí va la lógica para abrir el chat, que en este caso no está habilitado para esta sección
                               },
                             ),
                             IconButton(
@@ -173,7 +191,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                       "Empresa eliminada de favoritos!");
                                   _updateFavoriteBusinesses();
                                 } else {
-                                  // Manejar el caso en que no hay un usuario autenticado
                                   customToast.showErrorToast(
                                       "Necesitas iniciar sesión para guardar favoritos!");
                                 }
@@ -238,20 +255,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 ),
               );
             } else {
-              // return ListView.builder(
-              //   itemCount: snapshot.data!.length,
-              //   itemBuilder: (context, index) {
-              //     Map<String, dynamic> data =
-              //         snapshot.data![index].data() as Map<String, dynamic>;
-              //     return Card(
-              //       child: ListTile(
-              //         title: Text(data['name']),
-              //         subtitle: Text(data['location']),
-              //         // Add more fields as needed
-              //       ),
-              //     );
-              //   },
-              // );
               List<DocumentSnapshot> businesses = snapshot.data ?? [];
               return ListView.builder(
                 itemCount: businesses.length,
@@ -261,16 +264,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   return GestureDetector(
                     onTap: () {
                       String businessId = businesses[index]
-                          .id; // Asegúrate de tener el id de la empresa
+                          .id;
                       _showCompanyCardDialog(context, data!, businessId);
                     },
                     child: Card(
                       child: ListTile(
-                        leading: Icon(Icons.business),
-                        // Puedes reemplazar esto con un logo o imagen de la empresa
+                        leading: Icon(Icons.business), // Se podría reemplazar esto por un logo o imagen de la empresa
                         title: Text(data?['name'] ?? ''),
                         subtitle: Text(data?['service'] ?? ''),
-                        // ... otros detalles del resultado de la búsqueda ...
+                        // Podemos seguir añadiendo otros detalles de las empresas
                       ),
                     ),
                   );

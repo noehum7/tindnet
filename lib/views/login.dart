@@ -8,6 +8,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/custom_toast.dart';
 import 'business_screen.dart';
 
+/*
+/// `LoginScreen` es una clase que proporciona una interfaz para que los usuarios inicien sesión en la aplicación.
+///
+/// Utiliza `FirebaseAuth` para autenticar a los usuarios con su correo electrónico y contraseña.
+/// Si el inicio de sesión es exitoso, redirige al usuario a la pantalla de cliente o de empresa.
+///
+/// Los usuarios pueden optar por recordar su inicio de sesión. Si eligen hacerlo, su ID de usuario se guarda en `SharedPreferences` y se utiliza para iniciar sesión automáticamente la próxima vez que abran la aplicación. Implementado para empresas y clientes.
+///
+/// Esta clase utiliza varios métodos auxiliares:
+/// - `rememberUser`: Guarda el ID de usuario en `SharedPreferences`.
+/// - `checkRememberedUser`: Comprueba si hay un ID de usuario guardado en `SharedPreferences` y, si lo hay, inicia sesión automáticamente.
+/// - `_togglePasswordVisibility`: Cambia la visibilidad de la contraseña en el campo de texto de la contraseña.
+///
+/// El método `build` de esta clase devuelve un formulario que los usuarios pueden rellenar para iniciar sesión. Si el formulario es válido, intenta iniciar sesión con `FirebaseAuth`. Si el inicio de sesión es exitoso, redirige al usuario a la pantalla de cliente o de empresa.
+ */
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -17,15 +33,11 @@ class _LoginScreenState extends State<LoginScreen> {
   bool rememberMe = false;
   bool _isPasswordHidden = true;
   CustomToast customToast = CustomToast();
-  
+
   final _formKey = GlobalKey<FormState>();
-
   final FormValidator formValidator = FormValidator();
-
-  // Define an instance of FirebaseAuth
   final _auth = FirebaseAuth.instance;
 
-  // Define the controllers for the email and password fields
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -34,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _isPasswordHidden = !_isPasswordHidden;
     });
   }
-  
+
   Future<void> rememberUser(UserCredential userCredential) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('userId', userCredential.user!.uid);
@@ -44,9 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userId = prefs.getString('userId');
     if (userId != null) {
-      // Intenta obtener el documento del usuario de la tabla de usuarios
-      DocumentSnapshot userDoc = await FirebaseFirestore
-          .instance
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
@@ -55,15 +65,13 @@ class _LoginScreenState extends State<LoginScreen> {
         // Si el usuario existe en la tabla de usuarios, redirige a la pantalla de cliente
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => ServiceScreen()),
+          MaterialPageRoute(builder: (context) => ServiceScreen()),
         );
       } else {
         // Si el usuario no existe en la tabla de usuarios, asume que es una empresa y redirige a la pantalla de empresa
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(
-              builder: (context) => BusinessProfileScreen()),
+          MaterialPageRoute(builder: (context) => BusinessProfileScreen()),
         );
       }
     }
@@ -180,10 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               await rememberUser(userCredential);
                             }
 
-                            // Obtiene el ID del usuario
                             String userId = userCredential.user!.uid;
-
-                            // Intenta obtener el documento del usuario de la tabla de usuarios
                             DocumentSnapshot userDoc = await FirebaseFirestore
                                 .instance
                                 .collection('users')
@@ -191,23 +196,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                 .get();
 
                             if (userDoc.exists) {
-                              // Si el usuario existe en la tabla de usuarios, redirige a la pantalla de cliente
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ServiceScreen()),
                               );
                             } else {
-                              // Si el usuario no existe en la tabla de usuarios, asume que es una empresa y redirige a la pantalla de empresa
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => BusinessProfileScreen()),
+                                    builder: (context) =>
+                                        BusinessProfileScreen()),
                               );
                             }
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'invalid-credential') {
-                              customToast.showErrorToast('El correo electrónico o la contraseña no son correctos.');
+                              customToast.showErrorToast(
+                                  'El correo electrónico o la contraseña no son correctos.');
                             }
                           } catch (e) {
                             customToast.showInfoToast(e.toString());
@@ -215,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors
-                              .primaryColor, // Color de fondo del botón
+                              .primaryColor,
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -237,10 +242,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             color: AppColors.secondaryColor,
                           ),
                           SizedBox(width: 10),
-                          // Espacio entre las líneas y el texto "o"
                           Text("o", style: TextStyle(fontSize: 15)),
                           SizedBox(width: 10),
-                          // Espacio entre las líneas y el texto "o"
                           Container(
                             height: 2.0,
                             width: MediaQuery.of(context).size.width * 0.35,
@@ -268,7 +271,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 15.0),
                       TextButton(
                         onPressed: () {
-                          // Acción a realizar cuando se presiona el texto de "¿Has olvidado la contraseña?"
+                          // Acción a realizar cuando se presiona el texto de "¿Has olvidado la contraseña?", no está implementado aún!!
                         },
                         child: Text('¿Has olvidado la contraseña?',
                             style: TextStyle(

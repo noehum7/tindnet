@@ -6,8 +6,27 @@ import '../services/chat_service.dart';
 import 'package:intl/intl.dart';
 import '../services/voice_recorder_service.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../widgets/audio_player_widget.dart';
+
+/*
+ * `ChatScreen` es una clase que representa la pantalla del chat.
+ *
+ * Esta pantalla muestra los mensajes de un chat específico entre el usuario actual y la empresa.
+ * Los mensajes se recuperan de Firestore.
+ *
+ * Cada mensaje se muestra en un contenedor con el texto del mensaje y la hora en que se envió.
+ * Los mensajes del usuario actual se alinean a la derecha y los mensajes del otro usuario o empresa se alinean a la izquierda.
+ * Si el mensaje es un enlace de audio, se muestra un reproductor de audio en lugar del texto del mensaje.
+ *
+ * La pantalla también incluye un campo de texto y un botón para enviar mensajes.
+ * Al presionar el botón de enviar, se envía el texto del campo de texto como un mensaje a Firestore.
+ *
+ * Además, la pantalla incluye un botón para grabar mensajes de audio.
+ * Al presionar este botón, se inicia la grabación de audio.
+ * Al presionar el botón de detener, se detiene la grabación y se envía el audio a Firestore.
+ *
+ * Esta clase utiliza `ChatService` para interactuar con Firestore y `VoiceRecorder` para grabar audio.
+ */
 
 class ChatScreen extends StatefulWidget {
   final String chatId;
@@ -97,9 +116,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot message = messages[index];
                     bool isUserMessage = message['sentBy'] == widget.userId;
-                    Timestamp? timestamp = message['timestamp']; // Recupera la hora del mensaje
-                    String time = timestamp != null ? DateFormat('Hm').format(timestamp.toDate()) : ''; // Formatea la hora
-                    // Comprueba si el mensaje es un enlace de audio
+                    Timestamp? timestamp = message['timestamp'];
+                    String time = timestamp != null ? DateFormat('Hm').format(timestamp.toDate()) : '';
                     bool isAudioMessage = message['text'].startsWith('https://firebasestorage.googleapis.com/');
 
                     return Container(
@@ -114,17 +132,8 @@ class _ChatScreenState extends State<ChatScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
-                          mainAxisSize: MainAxisSize.min, // Hace que la fila ocupe el espacio mínimo necesario
+                          mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
-                            // ConstrainedBox(
-                            //   constraints: BoxConstraints(
-                            //     maxWidth: MediaQuery.of(context).size.width * 0.65,
-                            //   ),
-                            //   child: Text(
-                            //     message['text'],
-                            //     style: TextStyle(color: Colors.white),
-                            //   ),
-                            // ),
                             ConstrainedBox(
                               constraints: BoxConstraints(
                                 maxWidth: MediaQuery.of(context).size.width * 0.65,
@@ -136,7 +145,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 style: TextStyle(color: Colors.white),
                               ),
                             ),
-                            SizedBox(width: 10), // Añade un espacio entre el mensaje y la hora
+                            SizedBox(width: 10),
                             Text(
                               time,
                               style: TextStyle(color: Colors.white, fontSize: 8),
@@ -181,7 +190,6 @@ class _ChatScreenState extends State<ChatScreen> {
                         if (File(filePath).existsSync()) {
                           String downloadUrl = await _chatService.uploadAudio(filePath);
 
-                          // Envía la URL de descarga como un mensaje
                           _chatService.sendMessage(
                             widget.chatId,
                             widget.userId,

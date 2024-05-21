@@ -5,6 +5,19 @@ import '../constants/app_colors.dart';
 import '../models/category.dart';
 import '../widgets/custom_drawer_customer.dart';
 
+/*
+/// `SearchScreen` es una clase que proporciona una interfaz para que los usuarios busquen empresas por categoría o nombre.
+///
+/// Los usuarios pueden buscar empresas de dos maneras:
+/// 1. Pueden seleccionar una categoría de una lista de categorías predefinidas. Al seleccionar una categoría, se les redirige a la pantalla `SearchResultsScreen` que muestra todas las empresas de esa categoría.
+/// 2. Pueden introducir el nombre de una empresa en un campo de texto. Al pulsar el botón de búsqueda, se les redirige a la pantalla `SearchResultsScreen` que muestra todas las empresas con ese nombre.
+///
+/// Esta clase utiliza varios métodos auxiliares:
+/// - `build`: Construye la interfaz de usuario de la pantalla de búsqueda. Contiene un `GridView` con las categorías y un campo de texto para la búsqueda por nombre.
+///
+/// El método `build` de esta clase devuelve un `Scaffold` que contiene un `AppBar` y un `SingleChildScrollView`. El `SingleChildScrollView` contiene un `Column` que a su vez contiene el `GridView` y el campo de texto.
+ */
+
 class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
@@ -35,11 +48,11 @@ class _SearchScreenState extends State<SearchScreen> {
               children: <Widget>[
                 // SizedBox(height: 10.0),
                 Container(
-                  padding: EdgeInsets.all(20.0), // Espacio alrededor del texto
+                  padding: EdgeInsets.all(20.0),
                   decoration: BoxDecoration(
-                    color: Colors.white, // Fondo blanco
+                    color: Colors.white,
                     borderRadius:
-                        BorderRadius.circular(20.0), // Bordes redondeados
+                        BorderRadius.circular(20.0),
                   ),
                   child: Text(
                     '¿Qué servicio buscas?',
@@ -57,8 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 SizedBox(height: 30.0),
                 GridView.count(
                   crossAxisCount: 3,
-                  shrinkWrap: true,
-                  // Añade esta línea para evitar errores de renderizado
+                  shrinkWrap: true, // Añado esta línea para evitar errores de renderizado: GridView se dimensionará a sí mismo para que su altura sea la misma que la altura total de los elementos que contiene.
                   children: List.generate(categories.length, (index) {
                     return GestureDetector(
                       onTap: () {
@@ -83,7 +95,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             decoration: BoxDecoration(
                               color: Colors.white, // Fondo blanco
                               borderRadius: BorderRadius.circular(
-                                  10.0), // Bordes redondeados
+                                  10.0),
                             ),
                             child: Icon(categories[index].icon),
                           ),
