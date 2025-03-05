@@ -46,6 +46,10 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
-    <string>Necesitamos acceso a tu micrófono para grabar audio.</string>
+    <string>Esta aplicación necesita acceso al micrófono para grabar audio.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Esta aplicación necesita acceso a la cámara para seleccionar imágenes.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Esta aplicación necesita acceso a la galería para seleccionar imágenes.</string>
 </dict>
 </plist>

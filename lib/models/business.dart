@@ -13,7 +13,8 @@ class Business {
   String email;
   String service;
   String? phone;
-  String? url;
+  // String? url;
+  List<String>? images;
   String? location;
   String? aboutUs;
   String? web;
@@ -25,7 +26,8 @@ class Business {
     required this.email,
     required this.service,
     this.phone,
-    this.url,
+    // this.url,
+    this.images,
     this.location,
     this.aboutUs,
     this.web,
@@ -41,7 +43,10 @@ class Business {
       phone: data['phone'],
       email: data['email'],
       service: data['service'],
-      url: data['url'],
+      // url: data['url'],
+      images: data.containsKey('images') && data['images'].isNotEmpty
+          ? List<String>.from(data['images'].map((item) => item.toString()))
+          : ['https://via.placeholder.com/150'], // URL de la imagen de respaldo
       location: data['location'],
       aboutUs: data['aboutUs'],
       web: data['web'],
@@ -56,7 +61,8 @@ class Business {
       'phone': phone,
       'email': email,
       'service': service,
-      'url': url,
+      // 'url': url,
+      'images': images,
       'location': location,
       'aboutUs': aboutUs,
       'web': web,

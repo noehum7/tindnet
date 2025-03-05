@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../constants/app_colors.dart';
 import '../utils/validators_utils.dart';
 import '../widgets/custom_toast.dart';
@@ -27,6 +28,7 @@ class _BusinessRegistrationScreenState extends State<BusinessRegistrationScreen>
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String? _selectedService;
+
 
   @override
   Widget build(BuildContext context) {

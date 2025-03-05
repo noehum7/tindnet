@@ -45,6 +45,25 @@ class ChatListScreen extends StatelessWidget {
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());
               }
+              if (snapshot.data!.docs.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.chat_bubble_outline,
+                        size: 100,
+                        color: Colors.grey,
+                      ),
+                      Text(
+                        'No has iniciado ningún chat con las empresas.',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 24, color: Colors.grey)
+                      ),
+                    ],
+                  ),
+                );
+              }
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
@@ -61,6 +80,8 @@ class ChatListScreen extends StatelessWidget {
                       String time = timestamp != null
                           ? DateFormat('Hm').format(timestamp.toDate())
                           : '';
+                      bool isAudioMessage = lastMessage['text'].startsWith('https://firebasestorage.googleapis.com/');
+                      bool isImageMessage = lastMessage['text'].startsWith('IMAGE');
                       return Dismissible(
                         key: Key(chat.id),
                         direction: DismissDirection.endToStart,
@@ -82,7 +103,24 @@ class ChatListScreen extends StatelessWidget {
                           title: Text(isCustomer
                               ? chat['businessName']
                               : chat['userName'], style: TextStyle(fontWeight: FontWeight.bold),),
-                          subtitle: Text(text),
+                          // subtitle: Text(text),
+                          subtitle: isAudioMessage
+                              ? Row(
+                                  children: [
+                                    Icon(Icons.mic),
+                                    SizedBox(width: 5),
+                                    Text('Mensaje de voz'),
+                                  ],
+                                )
+                              : isImageMessage
+                                  ? Row(
+                                      children: [
+                                        Icon(Icons.image),
+                                        SizedBox(width: 5),
+                                        Text('Imagen'),
+                                      ],
+                                    )
+                              : Text(text),
                           trailing: Text(time),
                           onTap: () {
                             Navigator.push(

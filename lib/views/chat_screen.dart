@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tindnet/constants/app_colors.dart';
 import '../services/chat_service.dart';
 import 'package:intl/intl.dart';
+import '../services/image_handler_service.dart';
 import '../services/voice_recorder_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../widgets/audio_player_widget.dart';
@@ -53,6 +54,8 @@ class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   final VoiceRecorder _voiceRecorder = VoiceRecorder();
+  final ImageHandler _imageHandler = ImageHandler();
+  bool _isRecording = false;
 
   Future<void> requestAudioPermission() async {
     PermissionStatus status = await Permission.microphone.status;
@@ -82,8 +85,76 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  bool _isRecording = false; // Añade un estado para la grabación
+  Future<void> requestImagePermissions() async {
+    // Comprobar si ya se han concedido los permisos de cámara
+    PermissionStatus cameraStatus = await Permission.camera.status;
 
+    if (!cameraStatus.isGranted) {
+      PermissionStatus newStatus = await Permission.camera.request();
+      if (!newStatus.isGranted) {
+        // El usuario no concedió el permiso de cámara
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Permiso denegado'),
+              content: Text('Necesitamos el permiso de la cámara para seleccionar imágenes. Por favor, habilita el permiso en la configuración de la aplicación.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cerrar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+
+    // Comprobar si ya se han concedido los permisos de almacenamiento
+    PermissionStatus storageStatus = await Permission.storage.status;
+
+    if (!storageStatus.isGranted) {
+      PermissionStatus newStatus = await Permission.storage.request();
+      if (!newStatus.isGranted) {
+        // El usuario no concedió el permiso de almacenamiento
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Permiso denegado'),
+              content: Text('Necesitamos el permiso de almacenamiento para seleccionar imágenes. Por favor, habilita el permiso en la configuración de la aplicación.'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cerrar'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
+
+  void sendImageMessage() async {
+    try {
+      await requestImagePermissions();
+      File image = await _imageHandler.selectImage();
+      String imageUrl = await _imageHandler.uploadImage(image);
+      _chatService.sendMessage(
+        widget.chatId,
+        widget.userId,
+        'IMAGE:' + imageUrl, // Añade el prefijo 'IMAGE:' a la URL de la imagen
+      );
+    } catch (e) {
+      // Manejar errores
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +190,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     Timestamp? timestamp = message['timestamp'];
                     String time = timestamp != null ? DateFormat('Hm').format(timestamp.toDate()) : '';
                     bool isAudioMessage = message['text'].startsWith('https://firebasestorage.googleapis.com/');
-
+                    bool isImageMessage = message['text'].startsWith('IMAGE:');
                     return Container(
                       alignment: isUserMessage
                           ? Alignment.centerRight
@@ -140,6 +211,8 @@ class _ChatScreenState extends State<ChatScreen> {
                               ),
                               child: isAudioMessage
                                   ? AudioPlayerWidget(url: message['text']) // Si es un mensaje de audio, muestra el reproductor de audio
+                                  : isImageMessage
+                                  ? Image.network(message['text'].substring(6)) // Si es un mensaje de imagen, muestra la imagen
                                   : Text(
                                 message['text'],
                                 style: TextStyle(color: Colors.white),
@@ -215,6 +288,50 @@ class _ChatScreenState extends State<ChatScreen> {
                     },
                     child: Icon(Icons.mic),
                   ),
+                SizedBox(width: 10),
+                // IconButton(
+                //   icon: Icon(Icons.image, color: AppColors.primaryColor),
+                //   onPressed: sendImageMessage,
+                // ),
+                IconButton(
+                  icon: Icon(Icons.image, color: AppColors.primaryColor),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (BuildContext bc) {
+                          return SafeArea(
+                            child: Container(
+                              child: Wrap(
+                                children: <Widget>[
+                                  ListTile(
+                                    leading: Icon(Icons.photo_library),
+                                    title: Text('Seleccionar de la galería'),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      sendImageMessage();
+                                    },
+                                  ),
+                                  ListTile(
+                                    leading: Icon(Icons.photo_camera),
+                                    title: Text('Tomar una foto'),
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      String imageUrl = await _imageHandler.takePhotoMessage();
+                                      _chatService.sendMessage(
+                                        widget.chatId,
+                                        widget.userId,
+                                        imageUrl,
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }
+                    );
+                  },
+                ),
                 SizedBox(width: 10),
                 IconButton(
                   icon: Icon(Icons.send, color: AppColors.primaryColor),

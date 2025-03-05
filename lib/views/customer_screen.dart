@@ -110,26 +110,71 @@ class ServiceScreen extends StatelessWidget {
                               child: Column(
                                 children: <Widget>[
                                   // Image.asset( Si quisiera poner una imagen local del proyecto en vez de un enlace de internet
-                                  Image.network(
-                                    businesses[index].url ??
-                                        'https://via.placeholder.com/150',
-                                    height: MediaQuery.of(context).size.height *
-                                        0.25,
-                                    width: double.infinity,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (BuildContext context,
-                                        Object exception,
-                                        StackTrace? stackTrace) {
-                                      // Si ocurre un error al cargar la imagen, se muestra una imagen de respaldo de los archivos del proyecto
-                                      return Image.asset(
-                                        'assets/images/logoblanco.jpg',
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.25,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                      );
-                                    },
+                                  // Image.network(
+                                  //   businesses[index].url ??
+                                  //       'https://via.placeholder.com/150',
+                                  //   height: MediaQuery.of(context).size.height *
+                                  //       0.25,
+                                  //   width: double.infinity,
+                                  //   fit: BoxFit.cover,
+                                  //   errorBuilder: (BuildContext context,
+                                  //       Object exception,
+                                  //       StackTrace? stackTrace) {
+                                  //     // Si ocurre un error al cargar la imagen, se muestra una imagen de respaldo de los archivos del proyecto
+                                  //     return Image.asset(
+                                  //       'assets/images/logoblanco.jpg',
+                                  //       height:
+                                  //           MediaQuery.of(context).size.height *
+                                  //               0.25,
+                                  //       width: double.infinity,
+                                  //       fit: BoxFit.cover,
+                                  //     );
+                                  //   },
+                                  // ),
+                                  // PageView.builder(
+                                  //   itemCount: businesses[index].images?.length ?? 0,
+                                  //   itemBuilder: (context, i) {
+                                  //     return Image.network(
+                                  //       businesses[index].images?[i] ?? 'https://via.placeholder.com/150',
+                                  //       height: MediaQuery.of(context).size.height * 0.25,
+                                  //       width: double.infinity,
+                                  //       fit: BoxFit.cover,
+                                  //       errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                  //         // Si ocurre un error al cargar la imagen, se muestra una imagen de respaldo de los archivos del proyecto
+                                  //         print('Failed to load image: $exception');
+                                  //         return Image.asset(
+                                  //           'assets/images/logoblanco.jpg',
+                                  //           height: MediaQuery.of(context).size.height * 0.25,
+                                  //           width: double.infinity,
+                                  //           fit: BoxFit.cover,
+                                  //         );
+                                  //       },
+                                  //     );
+                                  //   },
+                                  // ),
+                                  Container(
+                                    height: MediaQuery.of(context).size.height * 0.25,
+                                    child: PageView.builder(
+                                      itemCount: businesses[index].images?.length ?? 0,
+                                      itemBuilder: (context, i) {
+                                        return Image.network(
+                                          businesses[index].images?[i] ?? 'https://via.placeholder.com/150',
+                                          height: MediaQuery.of(context).size.height * 0.25,
+                                          width: double.infinity,
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                                            // Si ocurre un error al cargar la imagen, se muestra una imagen de respaldo de los archivos del proyecto
+                                            print('Failed to load image: $exception');
+                                            return Image.asset(
+                                              'assets/images/logoblanco.jpg',
+                                              height: MediaQuery.of(context).size.height * 0.25,
+                                              width: double.infinity,
+                                              fit: BoxFit.cover,
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
                                   ),
                                   SizedBox(height: 10.0),
                                   Align(
@@ -143,28 +188,49 @@ class ServiceScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(height: 10.0),
-                                  // Align(
-                                  //   alignment: Alignment.centerLeft,
-                                  //   child: Text(
-                                  //     businesses[index].aboutUs ??
-                                  //         'Información de la empresa no disponible.',
-                                  //     textAlign: TextAlign.left,
-                                  //     style: TextStyle(fontSize: 14, color: AppColors.primaryColor),
-                                  //   ),
-                                  // ),
                                   Align(
                                     alignment: Alignment.centerLeft,
                                     child: GestureDetector(
                                       onTap: () {
+                                        // showDialog(
+                                        //   context: context,
+                                        //   builder: (BuildContext context) {
+                                        //     return AlertDialog(
+                                        //       title: Text('Descripción de la empresa'),
+                                        //       content: Text(businesses[index].aboutUs ?? 'Información de la empresa no disponible.'),
+                                        //       actions: <Widget>[
+                                        //         TextButton(
+                                        //           child: Text('Cerrar'),
+                                        //           onPressed: () {
+                                        //             Navigator.of(context).pop();
+                                        //           },
+                                        //         ),
+                                        //       ],
+                                        //     );
+                                        //   },
+                                        // );
                                         showDialog(
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title: Text('Descripción completa'),
-                                              content: Text(businesses[index].aboutUs ?? 'Información de la empresa no disponible.'),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(20), // Añade bordes redondeados
+                                              ),
+                                              title: Text(
+                                                'Descripción de la empresa',
+                                                style: TextStyle(color: AppColors.primaryColor), // Cambia el estilo del título
+                                              ),
+                                              content: Text(
+                                                businesses[index].aboutUs ?? 'Información de la empresa no disponible.',
+                                                style: TextStyle(color: AppColors.primaryColor), // Cambia el estilo del contenido
+                                              ),
+                                              backgroundColor: Colors.white, // Cambia el color de fondo
                                               actions: <Widget>[
                                                 TextButton(
-                                                  child: Text('Cerrar'),
+                                                  child: Text(
+                                                    'Cerrar',
+                                                    style: TextStyle(color: AppColors.primaryColor), // Cambia el estilo del botón
+                                                  ),
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
