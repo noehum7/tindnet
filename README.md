@@ -97,9 +97,32 @@ Mira el funcionamiento completo de la aplicación en este vídeo demostrativo:
 
 ## 🛠️ Tecnologías utilizadas
 
-- Dart como lenguaje de programación
-- Flutter para el desarrollo multiplataforma
-- Firebase como backend (Autenticación, Firestore, Storage)
+### Frontend
+- Lenguaje: Dart
+- Framework: Flutter
+- IDE: IntelliJ IDEA
+
+### Backend
+- Base de Datos: Firebase Firestore (NoSQL)
+- Autenticación: Firebase Authentication
+- Notificaciones: Firebase Cloud Messaging (opcional)
+
+### Herramientas y Librerías
+- Gestión de Estado: setState
+- UI/UX: Material Design
+- Autenticación Social: Google Sign-In
+
+## 🏗️ Estructura del Proyecto
+
+La aplicación sigue una estructura modular en el directorio lib/:
+
+- auth/ - Manejo de autenticación con Firebase.
+- utils/ - Funcionalidades auxiliares como validación y gestión de favoritos.
+- constants/ - Configuración de estilos y colores.
+- models/ - Definición de las clases Business y Service.
+- views/ - Todas las pantallas principales de la app.
+- widgets/ - Componentes reutilizables.
+- main.dart - Punto de entrada de la aplicación.
 
 ## 📲 Instalación
 
